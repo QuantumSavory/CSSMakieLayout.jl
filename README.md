@@ -94,4 +94,4 @@ JSServe.route!(server, "/" => landing);
 wait(server)
 ```
 
-This code can be visualized at [./examples/examples_readme](./examples/examples_readme)
+This code can be visualized at [./examples/example_readme](./examples/example_readme)
