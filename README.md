@@ -15,9 +15,9 @@ The layout would look something like this:
 
 By acting on the buttons, one moves from one figure to the other.
 
-This can be easily implemented using **CSSMakieLayout.jl**
+### This can be easily implemented using **CSSMakieLayout.jl**
 
-First of all include the library in your project
+1. First of all include the library in your project
 
 ```julia
 using Base.Threads
@@ -31,7 +31,7 @@ import JSServe.TailwindDashboard as D
 using CssMakieLayout
 ```
 
-then define yur layout using CSSMakieLayout.jl,
+2. then define yur layout using CSSMakieLayout.jl,
 
 ```julia
 
@@ -70,7 +70,7 @@ landing = App() do session::Session
 end
 ```
 
-then Serve the app
+3. then Serve the app
 
 ```julia
 isdefined(Main, :server) && close(server);
@@ -85,3 +85,5 @@ JSServe.route!(server, "/" => landing);
 
 wait(server)
 ```
+
+This code can be visualized at [examples/examples_readme](examples/examples_readme)
