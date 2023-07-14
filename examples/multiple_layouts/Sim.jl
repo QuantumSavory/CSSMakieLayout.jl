@@ -40,7 +40,7 @@ function layout_content(DOM, mainfigures #TODO: remove DOM param
     menufigs_andtitles = wrap([
         vstack(
             hoverable(menufigures[i], anim=[:border], class="$(config[:colorscheme][2])";
-                    session=session, observable=@lift($active_index == i)),
+                    observable=@lift($active_index == i)),
             title_zstack[i];
             class="justify-center align-center "    
             ) 
@@ -50,7 +50,7 @@ function layout_content(DOM, mainfigures #TODO: remove DOM param
                 active(mainfigures[1]),
                 wrap(mainfigures[2]),
                 wrap(mainfigures[3]);
-                session=session, observable=active_index,
+                observable=active_index,
                 anim=[:whoop],
                 style="width: $(config[:resolution][1])px")
     
@@ -149,7 +149,8 @@ end
 ###################### 4. LANDING PAGE OF THE APP ######################
 
 landing = App() do session::Session
-    
+    CssMakieLayout.CurrentSession = session
+
     # Create the menufigures and the mainfigures
     mainfigures = [Figure(backgroundcolor=:white,  resolution=config[:resolution]) for _ in 1:3]
     menufigures = [Figure(backgroundcolor=:white,  resolution=config[:smallresolution]) for _ in 1:3]
@@ -185,9 +186,8 @@ landing = App() do session::Session
     # Create ZStacks displayong titles below the menu graphs
     titles_zstack = [DOM.h4(t, class="upper") for t in titles]
     for i in 1:3
-        titles_zstack[i] = zstack(titles_zstack[i], wrap(""); height=2,
+        titles_zstack[i] = zstack(titles_zstack[i], wrap(""); 
                                         observable=@lift(($hoveredidx == i || $activeidx == i)),
-                                        session=session,
                                         anim=[:opacity], style="""color: $(config[:colorscheme][2]);""")
     end
 
@@ -198,7 +198,7 @@ landing = App() do session::Session
     # Add title to the right in the form of a ZStack
     titles_div = [DOM.h1(t) for t in titles]
     titles_div[1] = active(titles_div[1])
-    titles_div = zstack(titles_div; observable=activeidx, session=session, anim=[:static]
+    titles_div = zstack(titles_div; observable=activeidx, anim=[:static]
     , style="""color: $(config[:colorscheme][4]);""") # static = no animation
     
     
@@ -208,7 +208,8 @@ landing = App() do session::Session
 end
 
 landing2 = App() do session::Session
-    
+    CssMakieLayout.CurrentSession = session
+
     # Active index: 1 2 or 3
     #   1: the first a.k.a alpha (Entanglement Generation) figure is active
     #   2: the second a.k.a beta (Entanglement Swapping) figure is active    
@@ -223,8 +224,8 @@ landing2 = App() do session::Session
         color: $(config[:colorscheme][2]);
         border: none !important;
     """
-    buttons = [button(wrap(DOM.h1("〈")); observable=activeidx, session=session, cap=3, type=:decreasecap, style=buttonstyle),
-               button(wrap(DOM.h1("〉")); observable=activeidx, session=session, cap=3, type=:increasecap, style=buttonstyle)]
+    buttons = [button(wrap(DOM.h1("〈")); observable=activeidx, cap=3, type=:decreasecap, style=buttonstyle),
+               button(wrap(DOM.h1("〉")); observable=activeidx, cap=3, type=:increasecap, style=buttonstyle)]
     
     # Titles of the plots
     titles= ["Entanglement Generation",
@@ -240,7 +241,7 @@ landing2 = App() do session::Session
                 active(mainfigures[1]),
                 wrap(mainfigures[2]),
                 wrap(mainfigures[3]);
-                session=session, observable=activeidx,
+                observable=activeidx,
                 style="width: $(config[:resolution][1])px")
     
 
@@ -248,7 +249,7 @@ landing2 = App() do session::Session
     # Add title to the right in the form of a ZStack
     titles_div = [DOM.h1(t) for t in titles]
     titles_div[1] = active(titles_div[1])
-    titles_div = zstack(titles_div; observable=activeidx, session=session, anim=[:static],
+    titles_div = zstack(titles_div; observable=activeidx, anim=[:static],
                     style="""color: $(config[:colorscheme][4]);""") # static = no animation
     
     

@@ -1,25 +1,4 @@
-# CSSMakieLayout.jl
-This library helps in the development of reactive frontends and can be
-used alongside **WGLMakie** and **JSServe**.
 
-## Example 1
-For example let's say we want to create a view in which we can visualize
-one of three figures (**a**, **b** and **c**) in a slider manner. 
-We also want to control the slider with two buttons: `LEFT` and `RIGHT`. The
-`RIGHT` button slided to the next figure and the `LEFT` one slides to the
-figure before.
-
-The layout would look something like this:
-
-!["< (left) | 1 | (right) >"](https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example2.png?raw=true)
-
-By acting on the buttons, one moves from one figure to the other.
-
-This can be easily implemented using **CSSMakieLayout.jl**
-
-First of all include the library in your project
-
-```julia
 using Base.Threads
 using WGLMakie
 WGLMakie.activate!()
@@ -29,11 +8,13 @@ import JSServe.TailwindDashboard as D
 
 # 1. LOAD LIBRARY   
 using CssMakieLayout
-```
 
-then define yur layout using CSSMakieLayout.jl,
+# 2. INCLUDE THE PLOTS
+include("Plots.jl")
 
-```julia
+config = Dict(
+    :resolution => (1400, 700), #used for the main figures
+)
 
 landing = App() do session::Session
     CssMakieLayout.CurrentSession = session
@@ -68,11 +49,8 @@ landing = App() do session::Session
     return hstack(CssMakieLayout.formatstyle, layout)
 
 end
-```
 
-then Serve the app
 
-```julia
 isdefined(Main, :server) && close(server);
 port = parse(Int, get(ENV, "QS_COLORCENTERMODCLUSTER_PORT", "8888"))
 interface = get(ENV, "QS_COLORCENTERMODCLUSTER_IP", "127.0.0.1")
@@ -82,6 +60,4 @@ JSServe.HTTPServer.start(server)
 JSServe.route!(server, "/" => landing);
 
 
-
 wait(server)
-```

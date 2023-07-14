@@ -9,6 +9,8 @@ import JSServe.TailwindDashboard as D
 export  hstack, vstack, wrap, zstack, active, classstack,
         button, hoverable
 
+CurrentSession = nothing
+
 animtoclass(anim) = join(pushfirst!([String(s) for s in anim], ""), " anim-")
 ###################### 1. Helper functions for UX ######################
 #   Functions that add css classes to DOM.div elements in order to 
@@ -29,7 +31,7 @@ wrap(content...; class="", style="", md=false) = DOM.div(JSServe.MarkdownCSS,
 _hoverable(item...; class="", style="", anim=[:default], md=false) = wrap(item; class="hoverable "*class*" "*animtoclass(anim), style=style, md=md)
 
 # Hoverable element that stays active when observable is set to 1
-function hoverable(item...; observable::Observable=nothing, session::Session=nothing, anim=[:default], class="", style="", md=false)
+function hoverable(item...; observable::Observable=nothing, session::Session=CurrentSession, anim=[:default], class="", style="", md=false)
     if observable === nothing
         return _hoverable(item; class=class, style=style, md=md)
     end
@@ -52,9 +54,9 @@ active(item...; class="", style="", md=false) = wrap(item; class="active "*class
 # 2. Dinamic Z-stack, with active element selected by an observable with
 #    range 1:height, where height defaults to 3 but can be modified
 
-zstack(item::Array; observable::Observable=nothing, session::Session=nothing, class="", anim=[:default], style="", md=false) = 
+zstack(item::Array; observable::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false) = 
     zstack(tuple(item); height=size(item)[1], observable=observable, session=session, class=class, anim=anim, style=style, md=md)
-function zstack(item...; height=nothing, observable::Observable=nothing, session::Session=nothing, class="", anim=[:default], style="", md=false) 
+function zstack(item...; height=nothing, observable::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false) 
     if observable === nothing
         return _zstack(item; class=class*" "*animtoclass(anim), style=style, md=md)
     else
@@ -87,7 +89,7 @@ vstack(item...; class="", style="", md=false) = wrap(item; class="vstack "*class
 
 # Toggle classes from toggleclasses array based on the value of the observable
 # used as selector
-function classstack(item; toggleclasses=[], observable::Observable=nothing, session::Session=nothing, class="", style="", md=false) 
+function classstack(item; toggleclasses=[], observable::Observable=nothing, session::Session=CurrentSession, class="", style="", md=false) 
     if observable === nothing
         return item
     else
@@ -113,7 +115,7 @@ _button(item; class="", style="") = hoverable(item; class=class, style=style)
 # Button which modifies the observable taken as parameter
 # type can be: :toggle, :increase, :decrease, :increasemod, :decreasemod
 #              :increasecap, :decreasecap
-function button(item; observable::Observable=nothing, session::Session=nothing, class="", style="", type=:toggle, cap=3, step=1, md=false)
+function button(item; observable::Observable=nothing, session::Session=CurrentSession, class="", style="", type=:toggle, cap=3, step=1, md=false)
     if observable === nothing
         return _button(item; class=class, style=style)
     end
