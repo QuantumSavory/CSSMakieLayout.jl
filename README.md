@@ -31,7 +31,15 @@ import JSServe.TailwindDashboard as D
 using CssMakieLayout
 ```
 
-2. then define yur layout using CSSMakieLayout.jl,
+2. And define the 3 figures' plots
+
+```julia
+function plot(figures) 
+    ...
+end
+```
+
+3. Then define your layout using CSSMakieLayout.jl,
 
 ```julia
 
@@ -70,7 +78,7 @@ landing = App() do session::Session
 end
 ```
 
-3. then Serve the app
+4. And finally Serve the app
 
 ```julia
 isdefined(Main, :server) && close(server);
@@ -82,8 +90,8 @@ JSServe.HTTPServer.start(server)
 JSServe.route!(server, "/" => landing);
 
 
-
+# the app will run on localhost at port 8888
 wait(server)
 ```
 
-This code can be visualized at [examples/examples_readme](examples/examples_readme)
+This code can be visualized at [./examples/examples_readme](./examples/examples_readme)
