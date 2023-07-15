@@ -93,5 +93,5 @@ JSServe.route!(server, "/" => landing);
 # the app will run on localhost at port 8888
 wait(server)
 ```
-
+  
 This code can be visualized at [./examples/example_readme](./examples/example_readme), or at [https://github.com/adrianariton/QuantumFristGenRepeater](https://github.com/adrianariton/QuantumFristGenRepeater) <- this will be updated shortly with the plots of the first gen repeater
