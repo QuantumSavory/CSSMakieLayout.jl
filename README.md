@@ -34,6 +34,11 @@ using CssMakieLayout
 
 ```julia
 
+config = Dict(
+    :resolution => (1400, 700), #used for the main figures
+    :colorscheme => ["rgb(242, 242, 247)", "black", "#000529", "white"]
+)
+
 landing = App() do session::Session
     CssMakieLayout.CurrentSession = session
 
@@ -67,7 +72,7 @@ landing = App() do session::Session
     layout = hstack(buttons[1], activefig, buttons[2])
     
     
-    return hstack(CssMakieLayout.formatstyle, layout)
+    return hstack(CssMakieLayout.formatstyle, CssMakieLayout.Themes[:elegant](config), layout)
 
 end
 ```
