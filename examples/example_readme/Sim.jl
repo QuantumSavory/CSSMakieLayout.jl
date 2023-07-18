@@ -49,7 +49,7 @@ landing = App() do session::Session
     layout = hstack(buttons[1], activefig, buttons[2])
     
     
-    return hstack(CssMakieLayout.formatstyle, layout)
+    return hstack(CssMakieLayout.formatstyle, CssMakieLayout.Themes[:elegant](config), layout)
 
 end
 
