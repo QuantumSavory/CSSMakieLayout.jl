@@ -1,4 +1,4 @@
-# CSSMakieLayout.jl
+# CssMakieLayout.jl
 This library helps in the development of reactive frontends and can be
 used alongside **WGLMakie** and **JSServe**.
 
@@ -15,7 +15,7 @@ The layout would look something like this:
 
 By acting on the buttons, one moves from one figure to the other.
 
-### This can be easily implemented using **CSSMakieLayout.jl**
+### This can be easily implemented using **CssMakieLayout.jl**
 
 1. First of all include the library in your project
 
