@@ -72,7 +72,7 @@ landing = App() do session::Session
 end
 ```
 
-4. And finally Serve the app
+3. And finally Serve the app
 
 ```julia
 isdefined(Main, :server) && close(server);
@@ -88,4 +88,4 @@ JSServe.route!(server, "/" => landing);
 wait(server)
 ```
   
-This code can be visualized at [./examples/example_readme](./examples/example_readme), or at [https://github.com/adrianariton/QuantumFristGenRepeater](https://github.com/adrianariton/QuantumFristGenRepeater) <- this will be updated shortly with the plots of the first gen repeater     
+This code can be visualized at [./examples/example_readme](./examples/example_readme), or at [https://github.com/adrianariton/QuantumFristGenRepeater](https://github.com/adrianariton/QuantumFristGenRepeater)  (this will be updated shortly with the plots of the first gen repeater)
