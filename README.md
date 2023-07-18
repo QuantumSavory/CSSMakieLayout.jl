@@ -11,7 +11,7 @@ figure before.
 
 The layout would look something like this:
 
-!["< (left) | 1 | (right) >"](https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example2.png?raw=true)
+!["< (left) | 1 | (right) >"](https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example1.gif?raw=true)
 
 By acting on the buttons, one moves from one figure to the other.
 
@@ -30,16 +30,7 @@ import JSServe.TailwindDashboard as D
 # 1. LOAD LIBRARY   
 using CssMakieLayout
 ```
-
-2. And define the 3 figures' plots
-
-```julia
-function plot(figures) 
-    ...
-end
-```
-
-3. Then define your layout using CSSMakieLayout.jl,
+2. Then define your layout using CSSMakieLayout.jl,
 
 ```julia
 
@@ -58,8 +49,11 @@ landing = App() do session::Session
     buttons = [button(wrap(DOM.h1("〈")); observable=activeidx, cap=3, type=:decreasecap),
                button(wrap(DOM.h1("〉")); observable=activeidx, cap=3, type=:increasecap)]
     
+    axii = [Axis(mainfigures[i][1, 1]) for i in 1:3]
     # Plot each of the 3 figures using your own plots!
-    plot(mainfigures)
+    scatter!(axii[1], 0:0.1:10, x -> sin(x))
+    scatter!(axii[2], 0:0.1:10, x -> tan(x))
+    scatter!(axii[3], 0:0.1:10, x -> log(x))
 
     # Obtain the reactive layout using a zstack controlled by the activeidx observable
     activefig = zstack(
@@ -82,9 +76,9 @@ end
 
 ```julia
 isdefined(Main, :server) && close(server);
-port = parse(Int, get(ENV, "QS_COLORCENTERMODCLUSTER_PORT", "8888"))
-interface = get(ENV, "QS_COLORCENTERMODCLUSTER_IP", "127.0.0.1")
-proxy_url = get(ENV, "QS_COLORCENTERMODCLUSTER_PROXY", "")
+port = 8888
+interface = "127.0.0.1"
+proxy_url = ""
 server = JSServe.Server(interface, port; proxy_url);
 JSServe.HTTPServer.start(server)
 JSServe.route!(server, "/" => landing);
@@ -94,7 +88,4 @@ JSServe.route!(server, "/" => landing);
 wait(server)
 ```
   
-This code can be visualized at [./examples/example_readme](./examples/example_readme), or at [https://github.com/adrianariton/QuantumFristGenRepeater](https://github.com/adrianariton/QuantumFristGenRepeater) <- this will be updated shortly with the plots of the first gen repeater
-
-
--- testing if rename worked --       
+This code can be visualized at [./examples/example_readme](./examples/example_readme), or at [https://github.com/adrianariton/QuantumFristGenRepeater](https://github.com/adrianariton/QuantumFristGenRepeater) <- this will be updated shortly with the plots of the first gen repeater     

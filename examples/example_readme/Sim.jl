@@ -9,11 +9,11 @@ import JSServe.TailwindDashboard as D
 # 1. LOAD LIBRARY   
 using CssMakieLayout
 
-# 2. INCLUDE THE PLOTS
-include("Plots.jl")
 
 config = Dict(
     :resolution => (1400, 700), #used for the main figures
+    :colorscheme => ["rgb(242, 242, 247)", "black", "#000529", "white"]
+
 )
 
 landing = App() do session::Session
@@ -31,8 +31,11 @@ landing = App() do session::Session
     buttons = [button(wrap(DOM.h1("〈")); observable=activeidx, cap=3, type=:decreasecap),
                button(wrap(DOM.h1("〉")); observable=activeidx, cap=3, type=:increasecap)]
     
+    axii = [Axis(mainfigures[i][1, 1]) for i in 1:3]
     # Plot each of the 3 figures using your own plots!
-    plot(mainfigures)
+    scatter!(axii[1], 0:0.1:10, x -> sin(x))
+    scatter!(axii[2], 0:0.1:10, x -> tan(x))
+    scatter!(axii[3], 0:0.1:10, x -> log(x))
 
     # Obtain the reactive layout using a zstack controlled by the activeidx observable
     activefig = zstack(
@@ -52,12 +55,11 @@ end
 
 
 isdefined(Main, :server) && close(server);
-port = parse(Int, get(ENV, "QS_COLORCENTERMODCLUSTER_PORT", "8888"))
-interface = get(ENV, "QS_COLORCENTERMODCLUSTER_IP", "127.0.0.1")
-proxy_url = get(ENV, "QS_COLORCENTERMODCLUSTER_PROXY", "")
+port = 8888
+interface = "127.0.0.1"
+proxy_url = ""
 server = JSServe.Server(interface, port; proxy_url);
 JSServe.HTTPServer.start(server)
 JSServe.route!(server, "/" => landing);
-
 
 wait(server)

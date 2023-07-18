@@ -493,4 +493,15 @@ const formatstyle=DOM.style("""
 
     """)
 
+const Themes = Dict(
+    :elegant => function fct(config)
+        return DOM.style("""
+        .CssMakieLayout_btn button{
+            background-color: $(config[:colorscheme][1]);
+            color: $(config[:colorscheme][2]);
+            border: none !important;
+        }""")
+    end,
+)
+
 end # module CssMakieLayout
