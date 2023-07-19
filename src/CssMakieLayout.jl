@@ -7,7 +7,7 @@ using Markdown
 import JSServe.TailwindDashboard as D
 
 export  hstack, vstack, wrap, zstack, active, selectclass,
-        button, hoverable
+        modifier, hoverable
 
 """
         CssMakieLayout.CurrentSession
@@ -282,19 +282,19 @@ _button(item; class="", style="") = hoverable(item; class=class, style=style)
 
 
 """
-        button(item; observable::Observable=nothing, class="", style="", type=:toggle, cap=3, step=1, md=false)
+modifier(item; action=:toggle, parameter::Observable=nothing, class="", style="", cap=3, step=1, md=false)
 
-    Wrap an item in a clickable div (button). When clicked, it modifies the `observable` taken as parameter based on the button's `type`, `cap` and `step`.
-    Type can be: :toggle, :increase, :decrease, :increasemod, :decreasemod
+    Wrap an item in a clickable div (modifier element/button) and bind it to an observable. When clicked, it modifies the `parameter` Observable taken as parameter based on the button's `action`, `cap` and `step`.
+    `action` can be: :toggle, :increase, :decrease, :increasemod, :decreasemod
               :increasecap, :decreasecap
 
     # Arguments
-        - `class`: additional classes of the element in a string separated with space
-        - `style`: string containing the additional css style of the wrapper div
+        - `class`: additional classes of the modifier element in a string separated with space
+        - `style`: string containing the additional css style of the modifier
         - `md`: Set to false unless specified otherwise. Specifies weather to aply the [`markdowned`](@ref)
                 function to each element of the content parameter before wrapping them.
-        - `observable::Observable`: Observable that s modified when a click event is triggered on the button.
-        - `type`: The way that the button modifies it's observable when clicked:    
+        - `parameter::Observable`: Observable that is modified when a click event is triggered on the modifier.
+        - `action`: The way that the modifier button modifies it's `parameter` when clicked:    
                     - `:toggle`: toggles the observable from 0 to 1, or from 1 to 0 (for example 1 - play, 0 - pause)
                     -  `:increase`, `decrease`: increase or decrease the observable by `step`
                     - `:increasemod`, `decreasemod`: increase or decrease the observable by `step` nd then take the modulo w.r.t `cap` and add 1, to keep the number in the [1, cap] interval
@@ -303,11 +303,11 @@ _button(item; class="", style="") = hoverable(item; class=class, style=style)
     
     # Example 
 
-    The button element can be used hand in hand to a zstack element to create reactive layouts as such:
+    The modifier element can be used hand in hand with a zstack element to create reactive layouts as such:
     ```julia
     mainfigures = [Figure(backgroundcolor=:white,  resolution=config[:resolution]) for _ in 1:3]
-    buttons = [button(wrap(DOM.h1("〈")); observable=activeidx, cap=3, type=:decreasecap, style=buttonstyle),
-                button(wrap(DOM.h1("〉")); observable=activeidx, cap=3, type=:increasecap, style=buttonstyle)]
+    buttons = [button(wrap(DOM.h1("〈")); action=:decreasecap, parameter=activeidx, cap=3, style=buttonstyle),
+                button(wrap(DOM.h1("〉")); action=:increasecap, parameter=activeidx, cap=3, style=buttonstyle)]
     activefig = zstack(
                     active(mainfigures[1]),
                     wrap(mainfigures[2]),
@@ -316,37 +316,37 @@ _button(item; class="", style="") = hoverable(item; class=class, style=style)
     layout = hstack(buttons[1], activefig, buttons[2])
     ```
 """
-function button(item; observable::Observable=nothing, class="", style="", type=:toggle, cap=3, step=1, md=false)
-    if observable === nothing
+function modifier(item; action=:toggle, parameter::Observable=nothing, class="", style="", cap=3, step=1, md=false)
+    if parameter === nothing
         return _button(item; class=class, style=style)
     end
     t = D.Button(item; class=class, style=style)
     on(t) do event
-        if type == :toggle
-            observable[] = !observable[]
-        elseif type == :increase
-            observable[] = observable[] + step
-        elseif type == :decrease
-            observable[] = observable[] - step
-        elseif type == :increasemod
-            observable[] = observable[] + step
-            if observable[] >= cap + 1
-                observable[] = 1
+        if action == :toggle
+            parameter[] = parameter[]
+        elseif action == :increase
+            parameter[] = parameter[] + step
+        elseif action == :decrease
+            parameter[] = parameter[] - step
+        elseif action == :increasemod
+            parameter[] = parameter[] + step
+            if parameter[] >= cap + 1
+                parameter[] = 1
             end
-        elseif type == :decreasemod
-            observable[] = observable[] - step
-            if observable[] <= 0
-                observable[] = cap
+        elseif action == :decreasemod
+            parameter[] = parameter[] - step
+            if parameter[] <= 0
+                parameter[] = cap
             end
-        elseif type == :increasecap
-            observable[] = observable[] + step
-            if observable[] >= cap + 1
-                observable[] = observable[] - step
+        elseif action == :increasecap
+            parameter[] = parameter[] + step
+            if parameter[] >= cap + 1
+                parameter[] = parameter[] - step
             end
-        elseif type == :decreasecap
-            observable[] = observable[] - step
-            if observable[] <= 0
-                observable[] =  observable[] + step
+        elseif action == :decreasecap
+            parameter[] = parameter[] - step
+            if parameter[] <= 0
+                parameter[] =  parameter[] + step
             end
         end
     end
