@@ -306,8 +306,8 @@ modifier(item; action=:toggle, parameter::Observable=nothing, class="", style=""
     The modifier element can be used hand in hand with a zstack element to create reactive layouts as such:
     ```julia
     mainfigures = [Figure(backgroundcolor=:white,  resolution=config[:resolution]) for _ in 1:3]
-    buttons = [button(wrap(DOM.h1("〈")); action=:decreasecap, parameter=activeidx, cap=3, style=buttonstyle),
-                button(wrap(DOM.h1("〉")); action=:increasecap, parameter=activeidx, cap=3, style=buttonstyle)]
+    buttons = [modifier(wrap(DOM.h1("〈")); action=:decreasecap, parameter=activeidx, cap=3, style=buttonstyle),
+                modifier(wrap(DOM.h1("〉")); action=:increasecap, parameter=activeidx, cap=3, style=buttonstyle)]
     activefig = zstack(
                     active(mainfigures[1]),
                     wrap(mainfigures[2]),

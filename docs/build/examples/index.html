@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Intro and examples · My Documentation</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">My Documentation</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Reactive and static elements</a></li><li class="is-active"><a class="tocitem" href>Intro and examples</a><ul class="internal"><li><a class="tocitem" href="#Example-1"><span>Example 1</span></a></li><li class="toplevel"><a class="tocitem" href="#Example-2"><span>Example 2</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Intro and examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Intro and examples</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/adrianariton/CssMMakieLayout/blob/master/docs/src/examples.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Intro-and-examples"><a class="docs-heading-anchor" href="#Intro-and-examples">Intro and examples</a><a id="Intro-and-examples-1"></a><a class="docs-heading-anchor-permalink" href="#Intro-and-examples" title="Permalink"></a></h1><p>This library helps in the development of reactive frontends and can be used alongside <strong>WGLMakie</strong> and <strong>JSServe</strong>.</p><p><em>Focus on the styling and let us handle the reactive part!</em></p><p>Let&#39;s go through two examples on how to use this library, the first one will be a simple one, and the second, more complex.</p><table><tr><th style="text-align: center">Example 1</th><th style="text-align: center">Example 2</th></tr><tr><td style="text-align: center"><img src="https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example1.gif?raw=true" alt="&quot;examples/assets/example1.gif&quot;"/></td><td style="text-align: center"><img src="https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example2.gif?raw=true" alt="&quot;examples/assets/example2.gif&quot;"/></td></tr></table><h2 id="Example-1"><a class="docs-heading-anchor" href="#Example-1">Example 1</a><a id="Example-1-1"></a><a class="docs-heading-anchor-permalink" href="#Example-1" title="Permalink"></a></h2><p>For example let&#39;s say we want to create a view in which we can visualize one of three figures (<strong>a</strong>, <strong>b</strong> and <strong>c</strong>) in a slider manner.  We also want to control the slider with two buttons: <code>LEFT</code> and <code>RIGHT</code>. The <code>RIGHT</code> button slided to the next figure and the <code>LEFT</code> one slides to the figure before.</p><p>The layout would look something like this:</p><p><img src="https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example1.gif?raw=true" alt="&quot;&lt; (left) | 1 | (right) &gt;&quot;"/></p><p>By acting on the buttons, one moves from one figure to the other.</p><h3 id="This-can-be-easily-implemented-using-**CssMakieLayout.jl**"><a class="docs-heading-anchor" href="#This-can-be-easily-implemented-using-**CssMakieLayout.jl**">This can be easily implemented using <strong>CssMakieLayout.jl</strong></a><a id="This-can-be-easily-implemented-using-**CssMakieLayout.jl**-1"></a><a class="docs-heading-anchor-permalink" href="#This-can-be-easily-implemented-using-**CssMakieLayout.jl**" title="Permalink"></a></h3><ol><li>First of all include the library in your project</li></ol><pre><code class="language-julia hljs">using Base.Threads
+using WGLMakie
+WGLMakie.activate!()
+using JSServe
+using Markdown
+import JSServe.TailwindDashboard as D
+
+# 1. LOAD LIBRARY   
+using CssMakieLayout</code></pre><ol><li>Then define your layout using CSSMakieLayout.jl,</li></ol><pre><code class="language-julia hljs">
+config = Dict(
+    :resolution =&gt; (1400, 700), #used for the main figures
+    :colorscheme =&gt; [&quot;rgb(242, 242, 247)&quot;, &quot;black&quot;, &quot;#000529&quot;, &quot;white&quot;]
+)
+
+landing = App() do session::Session
+    CssMakieLayout.CurrentSession = session
+
+    # Active index: 1 2 or 3
+    #   1: the first a.k.a &#39;a&#39; figure is active
+    #   2: the second a.k.a &#39;b&#39; figure is active    
+    #   3: the third a.k.a &#39;c&#39; figure is active
+    activeidx = Observable(1)
+
+    # Create the buttons and the mainfigures
+    mainfigures = [Figure(backgroundcolor=:white,  resolution=config[:resolution]) for _ in 1:3]
+    
+    buttons = [modifier(wrap(DOM.h1(&quot;〈&quot;)); action=:decreasecap, parameter=activeidx, cap=3),
+                modifier(wrap(DOM.h1(&quot;〉&quot;)); action=:increasecap, parameter=activeidx, cap=3)]
+    
+    
+    axii = [Axis(mainfigures[i][1, 1]) for i in 1:3]
+    # Plot each of the 3 figures using your own plots!
+    scatter!(axii[1], 0:0.1:10, x -&gt; sin(x))
+    scatter!(axii[2], 0:0.1:10, x -&gt; tan(x))
+    scatter!(axii[3], 0:0.1:10, x -&gt; log(x))
+
+    # Obtain the reactive layout using a zstack controlled by the activeidx observable
+    activefig = zstack(
+                active(mainfigures[1]),
+                wrap(mainfigures[2]),
+                wrap(mainfigures[3]);
+                observable=activeidx,
+                style=&quot;width: $(config[:resolution][1])px&quot;)
+    
+
+    layout = hstack(buttons[1], activefig, buttons[2])
+    
+    
+    return hstack(CssMakieLayout.formatstyle, CssMakieLayout.Themes[:elegant](config), layout)
+
+end</code></pre><ol><li>And finally Serve the app</li></ol><pre><code class="language-julia hljs">isdefined(Main, :server) &amp;&amp; close(server);
+port = 8888
+interface = &quot;127.0.0.1&quot;
+proxy_url = &quot;&quot;
+server = JSServe.Server(interface, port; proxy_url);
+JSServe.HTTPServer.start(server)
+JSServe.route!(server, &quot;/&quot; =&gt; landing);
+
+
+# the app will run on localhost at port 8888
+wait(server)</code></pre><p>This code can be visualized at <a href="examples/example_readme">./examples/example_readme</a>, or at <a href="https://github.com/adrianariton/QuantumFristGenRepeater">https://github.com/adrianariton/QuantumFristGenRepeater</a>  (this will be updated shortly with the plots of the first gen repeater)</p><h1 id="Example-2"><a class="docs-heading-anchor" href="#Example-2">Example 2</a><a id="Example-2-1"></a><a class="docs-heading-anchor-permalink" href="#Example-2" title="Permalink"></a></h1><p>This time we are going to create a selectable layout with a menu, that will look like this:</p><p><img src="https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example2.gif?raw=true" alt="&quot;&lt; (left) | 1 | (right) &gt;&quot;"/></p><p>To do this we will follow the same stept, with a modified layout function:</p><ol><li>First of all include the library in your project</li></ol><pre><code class="language-julia hljs">using Base.Threads
+using WGLMakie
+WGLMakie.activate!()
+using JSServe
+using Markdown
+import JSServe.TailwindDashboard as D
+
+# 1. LOAD LIBRARY   
+using CssMakieLayout</code></pre><ol><li>Create the layout</li></ol><pre><code class="language-julia hljs">
+config = Dict(
+    :resolution =&gt; (1400, 700), #used for the main figures
+    :colorscheme =&gt; [&quot;rgb(242, 242, 247)&quot;, &quot;black&quot;, &quot;#000529&quot;, &quot;white&quot;],
+    :smallresolution =&gt; (280, 160), #used for the menufigures
+
+)
+
+# define some additional style for the menufigures&#39; container
+menufigs_style = &quot;&quot;&quot;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: $(config[:colorscheme][1]);
+    padding-top: 20px;
+    width: $(config[:resolution][1])px;
+&quot;&quot;&quot;
+
+landing = App() do session::Session
+    CssMakieLayout.CurrentSession = session
+
+    # Create the menufigures and the mainfigures
+    mainfigures = [Figure(backgroundcolor=:white,  resolution=config[:resolution]) for _ in 1:3]
+    menufigures = [Figure(backgroundcolor=:white,  resolution=config[:smallresolution]) for _ in 1:3]
+    # Figure titles
+    titles= [&quot;Figure a: sin(x)&quot;,
+            &quot;Figure b: tan(x)&quot;,
+            &quot;Figure c: cos(x)&quot;]
+    
+    # Active index/ hovered index: 1 2 or 3
+    #   1: the first a.k.a &#39;a&#39; figure is active / hovered respectively
+    #   2: the second a.k.a &#39;b&#39; figure is active / hovered respectively
+    #   3: the third a.k.a &#39;c&#39; figure is active / hovered respectively
+    activeidx = Observable(1)
+    hoveredidx = Observable(0)
+
+    # Add custom click event listeners
+    for i in 1:3
+        on(events(menufigures[i]).mousebutton) do event
+            activeidx[]=i  
+            notify(activeidx)
+        end
+        on(events(menufigures[i]).mouseposition) do event
+            hoveredidx[]=i  
+            notify(hoveredidx)
+        end
+    end
+
+    # Axii of each of the 6 figures
+    main_axii = [Axis(mainfigures[i][1, 1]) for i in 1:3]
+    menu_axii = [Axis(menufigures[i][1, 1]) for i in 1:3]
+
+    # Plot each of the 3 figures using your own plots!
+    scatter!(main_axii[1], 0:0.1:10, x -&gt; sin(x))
+    scatter!(main_axii[2], 0:0.1:10, x -&gt; tan(x))
+    scatter!(main_axii[3], 0:0.1:10, x -&gt; log(x))
+
+    scatter!(menu_axii[1], 0:0.1:10, x -&gt; sin(x))
+    scatter!(menu_axii[2], 0:0.1:10, x -&gt; tan(x))
+    scatter!(menu_axii[3], 0:0.1:10, x -&gt; log(x))
+
+    
+    # Create ZStacks displaying titles below the menu graphs
+    titles_zstack = [DOM.h4(t, class=&quot;upper&quot;) for t in titles]
+    
+    for i in 1:3
+        titles_zstack[i] = zstack(titles_zstack[i], wrap(&quot;&quot;); 
+                                observable=@lift(($hoveredidx == i || $activeidx == i)),
+                                anim=[:opacity])
+    end
+
+    # Wrap each of the menu figures and its corresponing title zstack in a div
+    menufigs_andtitles = wrap([
+            vstack(
+                hoverable(menufigures[i], anim=[:border];
+                        stayactiveif=@lift($activeidx == i)),
+                titles_zstack[i];
+                class=&quot;justify-center align-center &quot;    
+            ) for i in 1:3]; 
+            class=&quot;menufigs&quot;,
+            style=menufigs_style
+        )
+    
+    # Create the active figure zstack and add the :whoop (zoom in) animation to it
+    activefig = zstack(
+                active(mainfigures[1]),
+                wrap(mainfigures[2]),
+                wrap(mainfigures[3]);
+                observable=activeidx,
+                anim=[:whoop])
+
+    # Obtain reactive layout of the figures 
+    return wrap(menufigs_andtitles, activefig, CssMakieLayout.formatstyle)
+
+end</code></pre><ol><li>And finally Serve the app</li></ol><pre><code class="language-julia hljs">isdefined(Main, :server) &amp;&amp; close(server);
+port = 8888
+interface = &quot;127.0.0.1&quot;
+proxy_url = &quot;&quot;
+server = JSServe.Server(interface, port; proxy_url);
+JSServe.HTTPServer.start(server)
+JSServe.route!(server, &quot;/&quot; =&gt; landing);
+
+
+# the app will run on localhost at port 8888
+wait(server)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Reactive and static elements</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Thursday 20 July 2023 01:21">Thursday 20 July 2023</span>. Using Julia version 1.9.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
