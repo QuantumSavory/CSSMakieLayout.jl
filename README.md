@@ -2,6 +2,14 @@
 This library helps in the development of reactive frontends and can be
 used alongside **WGLMakie** and **JSServe**.
 
+## Focus on the styling and let us handle the reactive part!
+
+Let's go through two examples on how to use this library, the first one will be a simple one, and the second, more complex.
+
+Example 1             |  Example 2
+:-------------------------:|:-------------------------:
+!["< (left) | 1 | (right) >"](https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example1.gif?raw=true)  |  !["< (left) | 1 | (right) >"](https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example2.gif?raw=true)
+
 ## Example 1
 For example let's say we want to create a view in which we can visualize
 one of three figures (**a**, **b** and **c**) in a slider manner. 
