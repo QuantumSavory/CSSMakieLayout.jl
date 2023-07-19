@@ -6,7 +6,7 @@ used alongside **WGLMakie** and **JSServe**.
 
 Let's go through two examples on how to use this library, the first one will be a simple one, and the second, more complex.
 
-Example 1             |  Example 2
+Example 1                  |  Example 2
 :-------------------------:|:-------------------------:
 !["< (left) | 1 | (right) >"](https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example1.gif?raw=true)  |  !["< (left) | 1 | (right) >"](https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example2.gif?raw=true)
 
