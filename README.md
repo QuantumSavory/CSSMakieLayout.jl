@@ -8,7 +8,7 @@ Let's go through two examples on how to use this library, the first one will be 
 
 Example 1                  |  Example 2
 :-------------------------:|:-------------------------:
-!["< (left) | 1 | (right) >"](https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example1.gif?raw=true)  |  !["< (left) | 1 | (right) >"](https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example2.gif?raw=true)
+!["examples/assets/example1.gif"](https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example1.gif?raw=true)  |  !["examples/assets/example2.gif"](https://github.com/adrianariton/CssMMakieLayout/blob/master/examples/assets/example2.gif?raw=true)
 
 ## Example 1
 For example let's say we want to create a view in which we can visualize
