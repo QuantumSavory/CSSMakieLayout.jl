@@ -51,8 +51,8 @@ landing = App() do session::Session
     # Create the buttons and the mainfigures
     mainfigures = [Figure(backgroundcolor=:white,  resolution=config[:resolution]) for _ in 1:3]
     
-    buttons = [modifier(wrap(DOM.h1("〈")); action=:decreasecap, parameter=activeidx, cap=3, style=buttonstyle),
-                modifier(wrap(DOM.h1("〉")); action=:increasecap, parameter=activeidx, cap=3, style=buttonstyle)]
+    buttons = [modifier(wrap(DOM.h1("〈")); action=:decreasecap, parameter=activeidx, cap=3),
+                modifier(wrap(DOM.h1("〉")); action=:increasecap, parameter=activeidx, cap=3)]
     
     
     axii = [Axis(mainfigures[i][1, 1]) for i in 1:3]
