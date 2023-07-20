@@ -1,9 +1,8 @@
-# Intro and examples
-
+# CssMakieLayout.jl
 This library helps in the development of reactive frontends and can be
 used alongside **WGLMakie** and **JSServe**.
 
-*Focus on the styling and let us handle the reactive part!*
+## Focus on the styling and let us handle the reactive part!
 
 Let's go through two examples on how to use this library, the first one will be a simple one, and the second, more complex.
 
@@ -75,7 +74,7 @@ landing = App() do session::Session
                 active(mainfigures[1]),
                 wrap(mainfigures[2]),
                 wrap(mainfigures[3]);
-                observable=activeidx,
+                activeidx=activeidx,
                 style="width: $(config[:resolution][1])px")
     
 
@@ -198,7 +197,7 @@ landing = App() do session::Session
     
     for i in 1:3
         titles_zstack[i] = zstack(titles_zstack[i], wrap(""); 
-                                observable=@lift(($hoveredidx == i || $activeidx == i)),
+                                activeidx=@lift(($hoveredidx == i || $activeidx == i)),
                                 anim=[:opacity])
     end
 
@@ -219,7 +218,7 @@ landing = App() do session::Session
                 active(mainfigures[1]),
                 wrap(mainfigures[2]),
                 wrap(mainfigures[3]);
-                observable=activeidx,
+                activeidx=activeidx,
                 anim=[:whoop])
 
     # Obtain reactive layout of the figures 

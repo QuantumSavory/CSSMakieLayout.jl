@@ -32,11 +32,10 @@ cml(class) = join(["CssMakieLayout_", class])
 """
         markdowned(figure)
 
-    Markdown wrapper that displays `figure`'s scene content. 
+    Markdown wrapper that displays `figure`'s scene content. Use it when you want simpler layouts created with Markdown.
     
     Use:
-    It is optional, 
-    meaning you can also wrap the figure itself in a `wrap` function. Tipically used
+    It is optional, meaning you can also wrap the figure itself in a `wrap` function. Tipically used
     with Markdown pages.
 """
 markdowned(figure) = md"""$(figure.scene)"""
@@ -45,6 +44,8 @@ markdowned(figure) = md"""$(figure.scene)"""
         wrap(content...; class, style, md=false)
     
     Wraps the content in a div element and sets the position of the div to `relative`.
+
+    Use it to nest elements together.
 
     # Arguments
         - `class`: classes of the element in a string separated with space
@@ -74,7 +75,7 @@ _hoverable(item...; class="", style="", anim=[:default], md=false) = wrap(item; 
 """
 hoverable(item...; stayactiveif::Observable=nothing, session::Session=CurrentSession, anim=[:default], class="", style="", md=false)
         
-    Hoverable element which also stays active if the `stayactiveif` observable is set to 1. By active, we mean 
+    Hoverable element which also stays active if the `stayactiveif` observable is set to 1. By active in the hoverable context, we mean 
     "to remain in the same state as when hovered".
 
     # Arguments
@@ -83,8 +84,8 @@ hoverable(item...; stayactiveif::Observable=nothing, session::Session=CurrentSes
         - `md`: Set to false unless specified otherwise. Specifies weather to aply the [`markdowned`](@ref)
                 function to each element of the content parameter before wrapping them.
         - `anim::Array`: Choose which animations to perform on hover: can be set to [:default] or [:border] or a combination of the 2
-        - `stayactiveif::Observable`: If the observable set as parameter is one, the element will be active weather hovered or not,
-                                      otherwise it will not be active unless hovered
+        - `stayactiveif::Observable`: If the observable set as parameter is one, the element will remain in the hovered state weather hovered or not,
+                                      otherwise it will not be in the hovered state unless hovered
         - `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 """
 function hoverable(item...; stayactiveif::Observable=nothing, session::Session=CurrentSession, anim=[:default], class="", style="", md=false)
@@ -115,8 +116,8 @@ _zstack(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayou
 """
         active(item...; class="", style="", md=false)
 
-    Activates a child of a [`zstack`](@ref). Can be used to set the active element of a zstack on page load.
-
+        When constructing a layout, this function marks an element as 'active', i.e. topmost in a zstack.
+    
     # Arguments
         - `class`: additional classes of the element in a string separated with space
         - `style`: string containing the additional css style of the wrapper div
@@ -126,18 +127,18 @@ _zstack(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayou
 active(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout_active "*class, style=style)
 
 """
-        zstack(item::Array; observable::Observable=nothing, session::Session=CurrentSession,
+        zstack(item::Array; activeidx::Observable=nothing, session::Session=CurrentSession,
                 class="", anim=[:default], style="", md=false)
 
     A zstack receives an array/a tuple of elements, and displays just one of them based on the
-    `observable` given as parameter.
+    `activeidx` given as parameter. The displayed (active in the context of the zstack) element can be thought of as the top of the zstack
     
     # Arguments
         - `class`: additional classes of the element in a string separated with space
         - `style`: string containing the additional css style of the wrapper div
         - `md`: Set to false unless specified otherwise. Specifies weather to aply the [`markdowned`](@ref)
                 function to each element of the content parameter before wrapping them.
-        - `observable::Observable`: This selects the element which is displayed. For example if observable is 4,
+        - `activeidx::Observable`: This selects the element which is displayed. For example if observable is 4,
                                     the zstack will display the 4th element of the `item` array/tuple.
         - `anim::Array`: Choose which animations to perform on transition (when `observable` is changed). Can be set to [:default], [:whoop], [:static], [:opacity] or a non-conflicting combination of them
         - `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
@@ -150,27 +151,30 @@ active(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout
                 active(mainfigures[1]),
                 wrap(mainfigures[2]),
                 wrap(mainfigures[3]);
-                observable=activeidx)
+                activeidx=activeidx)
     ```
 """
-zstack(item::Array; observable::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false) = 
-    zstack(tuple(item); height=size(item)[1], observable=observable, session=session, class=class, anim=anim, style=style, md=md)
+zstack(item::Array; activeidx::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false) = 
+    zstack(tuple(item); height=size(item)[1], activeidx=activeidx, session=session, class=class, anim=anim, style=style, md=md)
 
 """
-    zstack(item...; observable::Observable=nothing, session::Session=CurrentSession,
+    zstack(item...; activeidx::Observable=nothing, session::Session=CurrentSession,
             class="", anim=[:default], style="", md=false)
 
 A zstack receives an array/a tuple of elements, and displays just one of them based on the
-`observable` given as parameter. Think of it as a carousel.
+`activeidx` given as parameter (it will desplay the `activeindex`'th element). Think of it as a carousel. 
+
+The displayed (active in the context of the zstack) will represent top of the zstack
+    
 
 # Arguments
     - `class`: additional classes of the element in a string separated with space
     - `style`: string containing the additional css style of the wrapper div
     - `md`: Set to false unless specified otherwise. Specifies weather to aply the [`markdowned`](@ref)
             function to each element of the content parameter before wrapping them.
-    - `observable::Observable`: This selects the element which is displayed. For example if observable is 4,
+    - `activeidx::Observable`: This selects the element which is displayed. For example if observable is 4,
                                 the zstack will display the 4th element of the `item` array/tuple.
-    - `anim::Array`: Choose which animations to perform on transition (when `observable` is changed). Can be set to [:default], [:whoop], [:static], [:opacity] or a non-conflicting combination of them
+    - `anim::Array`: Choose which animations to perform on transition (when `activeidx` is changed). Can be set to [:default], [:whoop], [:static], [:opacity] or a non-conflicting combination of them
     - `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 
 # Example
@@ -182,11 +186,11 @@ A zstack receives an array/a tuple of elements, and displays just one of them ba
             active(mainfigures[1]),
             wrap(mainfigures[2]),
             wrap(mainfigures[3]);
-            observable=activeidx)
+            activeidx=activeidx)
 ```
 """
-function zstack(item...; height=nothing, observable::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false) 
-    if observable === nothing
+function zstack(item...; height=nothing, activeidx::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false) 
+    if activeidx === nothing
         return _zstack(item; class=class*" "*animtoclass(anim), style=style, md=md)
     else
         if height===nothing
@@ -195,8 +199,8 @@ function zstack(item...; height=nothing, observable::Observable=nothing, session
         # static zstack
         item_div =  wrap(item; class="CssMakieLayout_zstack "*class*" "*animtoclass(anim), style=style)
 
-        # add on(observable) event
-        onjs(session, observable, js"""function on_update(new_value) {
+        # add on(activeidx) event
+        onjs(session, activeidx, js"""function on_update(new_value) {
             const activefig_stack = $(item_div)
             for(i = 1; i <= $(height); ++i) {
                 const element = activefig_stack.querySelector(":nth-child(" + i +")")
@@ -245,6 +249,11 @@ vstack(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout
 
 Ads a class from the `toggleclasses` Array to the `item` element based on the value of the `selector` Observable.
 Returns the modified item.
+
+Use it when an element needs to quickly toggle between two or more classes based on the value of an observable. 
+A simple example would be light/dark mode selection based on an observable. This can also be used hand in hand with with a
+`modifier` element.
+
 # Arguments
     - `class`: additional classes of the element in a string separated with space
     - `style`: string containing the additional css style of the wrapper div
@@ -287,6 +296,12 @@ modifier(item; action=:toggle, parameter::Observable=nothing, class="", style=""
     Wrap an item in a clickable div (modifier element/button) and bind it to an observable. When clicked, it modifies the `parameter` Observable taken as parameter based on the button's `action`, `cap` and `step`.
     `action` can be: :toggle, :increase, :decrease, :increasemod, :decreasemod
               :increasecap, :decreasecap
+
+    Use it when you need to modify the value of an observale based on the number of click events on an element.
+    Examples could range from 
+
+    - play/pause, dark/light mode (togglers)
+    - previous/next (decreasecap/increasecap or decreasemod/increasemod for loopback)
 
     # Arguments
         - `class`: additional classes of the modifier element in a string separated with space

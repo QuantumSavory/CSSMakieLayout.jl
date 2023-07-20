@@ -42,7 +42,7 @@ landing = App() do session::Session
                 active(mainfigures[1]),
                 wrap(mainfigures[2]),
                 wrap(mainfigures[3]);
-                observable=activeidx,
+                activeidx=activeidx,
                 style="width: $(config[:resolution][1])px")
     
 

@@ -50,7 +50,7 @@ function layout_content(DOM, mainfigures #TODO: remove DOM param
                 active(mainfigures[1]),
                 wrap(mainfigures[2]),
                 wrap(mainfigures[3]);
-                observable=active_index,
+                activeidx=active_index,
                 anim=[:whoop],
                 style="width: $(config[:resolution][1])px")
     
@@ -187,7 +187,7 @@ landing = App() do session::Session
     titles_zstack = [DOM.h4(t, class="upper") for t in titles]
     for i in 1:3
         titles_zstack[i] = zstack(titles_zstack[i], wrap(""); 
-                                        observable=@lift(($hoveredidx == i || $activeidx == i)),
+                                        activeidx=@lift(($hoveredidx == i || $activeidx == i)),
                                         anim=[:opacity], style="""color: $(config[:colorscheme][2]);""")
     end
 
@@ -198,7 +198,7 @@ landing = App() do session::Session
     # Add title to the right in the form of a ZStack
     titles_div = [DOM.h1(t) for t in titles]
     titles_div[1] = active(titles_div[1])
-    titles_div = zstack(titles_div; observable=activeidx, anim=[:static]
+    titles_div = zstack(titles_div; activeidx=activeidx, anim=[:static]
     , style="""color: $(config[:colorscheme][4]);""") # static = no animation
     
     
@@ -241,7 +241,7 @@ landing2 = App() do session::Session
                 active(mainfigures[1]),
                 wrap(mainfigures[2]),
                 wrap(mainfigures[3]);
-                observable=activeidx,
+                activeidx=activeidx,
                 style="width: $(config[:resolution][1])px")
     
 
@@ -249,7 +249,7 @@ landing2 = App() do session::Session
     # Add title to the right in the form of a ZStack
     titles_div = [DOM.h1(t) for t in titles]
     titles_div[1] = active(titles_div[1])
-    titles_div = zstack(titles_div; observable=activeidx, anim=[:static],
+    titles_div = zstack(titles_div; activeidx=activeidx, anim=[:static],
                     style="""color: $(config[:colorscheme][4]);""") # static = no animation
     
     
