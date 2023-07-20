@@ -28,12 +28,10 @@ By acting on the buttons, one moves from one figure to the other.
 1. First of all include the library in your project
 
 ```julia
-using Base.Threads
 using WGLMakie
 WGLMakie.activate!()
 using JSServe
 using Markdown
-import JSServe.TailwindDashboard as D
 
 # 1. LOAD LIBRARY   
 using CssMakieLayout
@@ -116,12 +114,10 @@ To do this we will follow the same stept, with a modified layout function:
 1. First of all include the library in your project
 
 ```julia
-using Base.Threads
 using WGLMakie
 WGLMakie.activate!()
 using JSServe
 using Markdown
-import JSServe.TailwindDashboard as D
 
 # 1. LOAD LIBRARY   
 using CssMakieLayout

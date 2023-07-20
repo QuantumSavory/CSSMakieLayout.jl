@@ -73,7 +73,7 @@ wrap(content...; class="", style="", md=false) = DOM.div(JSServe.MarkdownCSS,
 _hoverable(item...; class="", style="", anim=[:default], md=false) = wrap(item; class="CssMakieLayout_hoverable "*class*" "*animtoclass(anim), style=style, md=md)
 
 """
-hoverable(item...; stayactiveif::Observable=nothing, session::Session=CurrentSession, anim=[:default], class="", style="", md=false)
+hoverable(item...; stayactiveif::Observable{Bool}=Observable(false), session::Session=CurrentSession, anim=[:default], class="", style="", md=false)
         
     Hoverable element which also stays active if the `stayactiveif` observable is set to 1. By active in the hoverable context, we mean 
     "to remain in the same state as when hovered".
@@ -88,7 +88,7 @@ hoverable(item...; stayactiveif::Observable=nothing, session::Session=CurrentSes
                                       otherwise it will not be in the hovered state unless hovered
         - `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 """
-function hoverable(item...; stayactiveif::Observable=nothing, session::Session=CurrentSession, anim=[:default], class="", style="", md=false)
+function hoverable(item...; stayactiveif::Observable{Bool}=Observable(false), session::Session=CurrentSession, anim=[:default], class="", style="", md=false)
     if stayactiveif === nothing
         return _hoverable(item; class=class, style=style, md=md)
     end
