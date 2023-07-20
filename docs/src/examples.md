@@ -225,8 +225,7 @@ end
 isdefined(Main, :server) && close(server);
 port = 8888
 interface = "127.0.0.1"
-proxy_url = ""
-server = JSServe.Server(interface, port; proxy_url);
+server = JSServe.Server(interface, port);
 JSServe.HTTPServer.start(server)
 JSServe.route!(server, "/" => landing);
 

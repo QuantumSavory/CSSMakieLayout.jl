@@ -42,7 +42,6 @@ using CssMakieLayout
 
 config = Dict(
     :resolution => (1400, 700), #used for the main figures
-    :colorscheme => ["rgb(242, 242, 247)", "black", "#000529", "white"]
 )
 
 landing = App() do session::Session
@@ -79,7 +78,7 @@ landing = App() do session::Session
     layout = hstack(buttons[1], activefig, buttons[2])
     
     
-    return hstack(CssMakieLayout.formatstyle, CssMakieLayout.Themes[:elegant](config), layout)
+    return hstack(CssMakieLayout.formatstyle, layout)
 
 end
 ```
@@ -90,8 +89,7 @@ end
 isdefined(Main, :server) && close(server);
 port = 8888
 interface = "127.0.0.1"
-proxy_url = ""
-server = JSServe.Server(interface, port; proxy_url);
+server = JSServe.Server(interface, port);
 JSServe.HTTPServer.start(server)
 JSServe.route!(server, "/" => landing);
 
@@ -129,9 +127,7 @@ using CssMakieLayout
 
 config = Dict(
     :resolution => (1400, 700), #used for the main figures
-    :colorscheme => ["rgb(242, 242, 247)", "black", "#000529", "white"],
     :smallresolution => (280, 160), #used for the menufigures
-
 )
 
 # define some additional style for the menufigures' container
@@ -139,7 +135,7 @@ menufigs_style = """
     display:flex;
     flex-direction: row;
     justify-content: space-around;
-    background-color: $(config[:colorscheme][1]);
+    background-color: rgb(242, 242, 247);
     padding-top: 20px;
     width: $(config[:resolution][1])px;
 """
@@ -229,8 +225,7 @@ end
 isdefined(Main, :server) && close(server);
 port = 8888
 interface = "127.0.0.1"
-proxy_url = ""
-server = JSServe.Server(interface, port; proxy_url);
+server = JSServe.Server(interface, port);
 JSServe.HTTPServer.start(server)
 JSServe.route!(server, "/" => landing);
 
