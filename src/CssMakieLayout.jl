@@ -6,7 +6,7 @@ using JSServe
 using Markdown
 import JSServe.TailwindDashboard as D
 
-export  hstack, vstack, wrap, zstack, active, selectclass,
+export  hstack, vstack, wrap, zstack, active,
         modifier, hoverable
 
 """
@@ -101,7 +101,7 @@ end
         _zstack(item...; class="", style="", md=false)
 
     A zstack receives an array/a tuple of elements, and displays just one of them based on the
-    `observable` given as parameter. _zstack is a static version of the zstack, which is used in the main [`zstack`](@ref)
+    `activeidx` given as parameter. _zstack is a static version of the zstack, which is used in the main [`zstack`](@ref)
     implementation.
     It can also be used as scaffolding for user defined behaviours.
     

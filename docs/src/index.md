@@ -82,9 +82,10 @@ Hoverable element which also stays active if the `stayactiveif` observable is se
 _zstack(item...; class="", style="", md=false)
 ```
 A zstack receives an array/a tuple of elements, and displays just one of them based on the
-`observable` given as parameter. _zstack is a static version of the zstack, which is used in the main [`zstack`](@ref)
+`activeidx` given as parameter. _zstack is a static version of the zstack, which is used in the main [`zstack`](@ref)
 implementation.
 It can also be used as scaffolding for user defined behaviours.
+    
 
 **Arguments**
 - `class`: additional classes of the element in a string separated with space
@@ -98,7 +99,7 @@ It can also be used as scaffolding for user defined behaviours.
 ```julia 
 active(item...; class="", style="", md=false)
 ```
-Activates a child of a [`zstack`](@ref). Can be used to set the active element of a zstack on page load.
+When constructing a layout, this function marks an element as 'active', i.e. topmost in a zstack.
 
 **Arguments**
 - `class`: additional classes of the element in a string separated with space
@@ -111,22 +112,22 @@ Activates a child of a [`zstack`](@ref). Can be used to set the active element o
 ##        zstack
 
 ```julia
-zstack(item::Array; observable::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false)
+zstack(item::Array; activeidx::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false)
 ```
 A zstack receives an array/a tuple of elements, and displays just one of them based on the
-`observable` given as parameter.
+`activeidx` given as parameter. The displayed (active in the context of the zstack) element can be thought of as the top of the zstack
 
-**Arguments**
+# Arguments
 - `class`: additional classes of the element in a string separated with space
 - `style`: string containing the additional css style of the wrapper div
 - `md`: Set to false unless specified otherwise. Specifies weather to aply the [`markdowned`](@ref)
         function to each element of the content parameter before wrapping them.
-- `observable::Observable`: This selects the element which is displayed. For example if observable is 4,
-                            the zstack will display the 4th element of the `item` array/tuple.
+- `activeidx::Observable`: This selects the element which is displayed. For example if observable is 4,
+                                the zstack will display the 4th element of the `item` array/tuple.
 - `anim::Array`: Choose which animations to perform on transition (when `observable` is changed). Can be set to [:default], [:whoop], [:static], [:opacity] or a non-conflicting combination of them
 - `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 
-### Example
+# Example
 
 ```julia
 mainfigures = [Figure(backgroundcolor=:white,  resolution=config[:resolution]) for _ in 1:3]
@@ -134,39 +135,41 @@ activefig = zstack(
         active(mainfigures[1]),
         wrap(mainfigures[2]),
         wrap(mainfigures[3]);
-        observable=activeidx)
+        activeidx=activeidx)
 ```
-
 
 ##    zstack
 
 ```julia
-zstack(item...; observable::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false)
+zstack(item...; activeidx::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false)
 ```
 
 A zstack receives an array/a tuple of elements, and displays just one of them based on the
-`observable` given as parameter. Think of it as a carousel.
+`activeidx` given as parameter (it will desplay the `activeindex`'th element). Think of it as a carousel. 
 
-**Arguments**
+The displayed (active in the context of the zstack) will represent top of the zstack
+
+
+# Arguments
 - `class`: additional classes of the element in a string separated with space
 - `style`: string containing the additional css style of the wrapper div
 - `md`: Set to false unless specified otherwise. Specifies weather to aply the [`markdowned`](@ref)
-function to each element of the content parameter before wrapping them.
-- `observable::Observable`: This selects the element which is displayed. For example if observable is 4,
-                    the zstack will display the 4th element of the `item` array/tuple.
-- `anim::Array`: Choose which animations to perform on transition (when `observable` is changed). Can be set to [:default], [:whoop], [:static], [:opacity] or a non-conflicting combination of them
+        function to each element of the content parameter before wrapping them.
+- `activeidx::Observable`: This selects the element which is displayed. For example if observable is 4,
+                        the zstack will display the 4th element of the `item` array/tuple.
+- `anim::Array`: Choose which animations to perform on transition (when `activeidx` is changed). Can be set to [:default], [:whoop], [:static], [:opacity] or a non-conflicting combination of them
 - `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 
-### Example
+# Example
 
 ```julia
 activeidx = Observable(1)
 mainfigures = [Figure(backgroundcolor=:white,  resolution=config[:resolution]) for _ in 1:3]
 activefig = zstack(
-    active(mainfigures[1]),
-    wrap(mainfigures[2]),
-    wrap(mainfigures[3]);
-    observable=activeidx)
+        active(mainfigures[1]),
+        wrap(mainfigures[2]),
+        wrap(mainfigures[3]);
+        activeidx=activeidx)
 ```
 
 
@@ -243,10 +246,10 @@ Wrap an item in a clickable div (modifier element/button) and bind it to an obse
         function to each element of the content parameter before wrapping them.
 - `parameter::Observable`: Observable that is modified when a click event is triggered on the modifier.
 - `action`: The way that the modifier button modifies it's `parameter` when clicked:    
-            - `:toggle`: toggles the observable from 0 to 1, or from 1 to 0 (for example 1 - play, 0 - pause)
-            -  `:increase`, `decrease`: increase or decrease the observable by `step`
-            - `:increasemod`, `decreasemod`: increase or decrease the observable by `step` nd then take the modulo w.r.t `cap` and add 1, to keep the number in the [1, cap] interval
-            - `:increasecap`, `:decreasecap`: increase or decrease the observable by `step`, keep it in the [1, cap] interval, but do not increase/decrease when increasing and decreasing would make the observable exit the interval (as oposed to the mod option which loops back, the cap option stays there).
+- `:toggle`: toggles the observable from 0 to 1, or from 1 to 0 (for example 1 - play, 0 - pause)
+-  `:increase`, `decrease`: increase or decrease the observable by `step`
+- `:increasemod`, `decreasemod`: increase or decrease the observable by `step` nd then take the modulo w.r.t `cap` and add 1, to keep the number in the [1, cap] interval
+- `:increasecap`, `:decreasecap`: increase or decrease the observable by `step`, keep it in the [1, cap] interval, but do not increase/decrease when increasing and decreasing would make the observable exit the interval (as oposed to the mod option which loops back, the cap option stays there).
 - `step`, `cap`: the step of the increase/decrease steps and the maximum cappacity
 
 ### Example 
