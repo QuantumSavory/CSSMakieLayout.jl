@@ -2,9 +2,7 @@
 This library helps in the development of reactive frontends and can be
 used alongside **WGLMakie** and **JSServe**.
 
-## Focus on the styling and let us handle the reactive part!
-
-Here are the functions you care about: 
+# The functions you care about
 
 Most frequently you will be using the `hstack`, `vstack`, and `zstack` functions to create your HTML/CSS layout. You will be wrapping your figures in HTML div tags with `wrap`. 
 
@@ -25,7 +23,7 @@ The workflow can be defined as such:
 
 - The **modifiable** elements are the ones that get modified by an observable: `zstack`, `hoverable` with the `stayactiveif` observable set and `selectclass`
 
-
+## Focus on the styling and let us handle the reactive part!
 
 Let's go through two examples on how to use this library, the first one will be a simple one, and the second, more complex.
 
