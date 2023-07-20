@@ -51,6 +51,7 @@ landing = App() do session::Session
     #   1: the first a.k.a 'a' figure is active
     #   2: the second a.k.a 'b' figure is active    
     #   3: the third a.k.a 'c' figure is active
+    # This observable is used to communicate between the zstack and the selection menu/buttons as such: the selection buttons modify the observable which in turn, modifies the active figure zstack.
     activeidx = Observable(1)
 
     # Create the buttons and the mainfigures
@@ -155,6 +156,7 @@ landing = App() do session::Session
     #   1: the first a.k.a 'a' figure is active / hovered respectively
     #   2: the second a.k.a 'b' figure is active / hovered respectively
     #   3: the third a.k.a 'c' figure is active / hovered respectively
+    # These two observables are used to communicate between the zstack and the selection menu/buttons as such: the selection buttons modify the observables which in turn, modify the active figure zstack.
     activeidx = Observable(1)
     hoveredidx = Observable(0)
 
