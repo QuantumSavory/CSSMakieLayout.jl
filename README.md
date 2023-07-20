@@ -2,17 +2,17 @@
 This library helps in the development of reactive frontends and can be
 used alongside **WGLMakie** and **JSServe**.
 
-# The functions you care about
+## The functions you care about
 
-Most frequently you will be using the `hstack`, `vstack`, and `zstack` functions to create your HTML/CSS layout. You will be wrapping your figures in HTML div tags with `wrap`. 
+Most frequently you will be using the `hstack` (row of items), `vstack` (column of items), and `zstack` functions to **create your HTML/CSS layout**. You will be wrapping your figures in HTML div tags with `wrap`. 
 
-When stacking things with `zstack` you will want to select which one is currently viewable with the `active` function and the `activeidx` keyword argument. Transitions between the states can also be enabled with the `anim` keyword argument. One can select `[:default]`, `[:whoop]`, `[:static]` , `[:opacity]` or a valid combination of the four.
+When stacking things with `zstack` you will want to select which one is currently viewable with the `active` function and the `activeidx` keyword argument. **Transitions** between the states can also be enabled with the `anim` keyword argument. One can select `[:default]`, `[:whoop]`, `[:static]` , `[:opacity]` or a valid combination of the four.
 
-Hover animations are available with the `hoverable` function with the specified `anim` keyword. One can select `[:default]`, `[:border]` or a combination of the two. 
+**Hover animations** are available with the `hoverable` function with the specified `anim` keyword. One can select `[:default]`, `[:border]` or a combination of the two. 
 
-And for convenience you can create clickable buttons that navigate the layout with `modifier`.
+And for convenience you can create **clickable buttons** that navigate the layout with `modifier`.
 
-The workflow can be defined as such:
+### The workflow can be defined as such:
 
 - Reactiveness centers around the `observable` objects.
 
