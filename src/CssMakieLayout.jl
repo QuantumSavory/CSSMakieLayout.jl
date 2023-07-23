@@ -249,7 +249,6 @@ function JSServe.jsrender(session::Session, zstack::ZStack)
     item = [JSServe.jsrender(session, l) for l in zstack.items]
 
     height = size(zstack.items)
-    print(size(item), length(item))
     # static zstack
     item_div =  wrap(tuple(item); class="CssMakieLayout_zstack "*attr(zstack, :class)*" "*animtoclass(attr(zstack, :anim)),
                 style=attr(zstack, :style))
