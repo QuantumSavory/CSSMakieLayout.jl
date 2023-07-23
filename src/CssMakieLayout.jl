@@ -9,19 +9,7 @@ import JSServe.TailwindDashboard as D
 export  hstack, vstack, wrap, zstack, active,
         modifier, hoverable
 
-"""
-        CssMakieLayout.CurrentSession
 
-    Session used as default for all session::Session params of the following functions. Set it at the begining of your code as such:
-
-    ```julia
-    landing2 = App() do session::Session
-        CssMakieLayout.CurrentSession = session
-        ...
-    end
-    ```
-"""
-CurrentSession = nothing
 
 animtoclass(anim) = join(pushfirst!([String(s) for s in anim], ""), " anim-")
 cml(class) = join(["CssMakieLayout_", class])
@@ -73,7 +61,7 @@ wrap(content...; class="", style="", md=false) = DOM.div(JSServe.MarkdownCSS,
 _hoverable(item...; class="", style="", anim=[:default], md=false) = wrap(item; class="CssMakieLayout_hoverable "*class*" "*animtoclass(anim), style=style, md=md)
 
 """
-hoverable(item...; stayactiveif::Observable{Bool}=Observable(false), session::Session=CurrentSession, anim=[:default], class="", style="", md=false)
+hoverable(item...; stayactiveif::Observable{Bool}=Observable(false), anim=[:default], class="", style="", md=false)
         
     Hoverable element which also stays active if the `stayactiveif` observable is set to 1. By active in the hoverable context, we mean 
     "to remain in the same state as when hovered".
@@ -86,16 +74,56 @@ hoverable(item...; stayactiveif::Observable{Bool}=Observable(false), session::Se
         - `anim::Array`: Choose which animations to perform on hover: can be set to [:default] or [:border] or a combination of the 2
         - `stayactiveif::Observable`: If the observable set as parameter is one, the element will remain in the hovered state weather hovered or not,
                                       otherwise it will not be in the hovered state unless hovered
-        - `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 """
-function hoverable(item...; stayactiveif::Observable{Bool}=Observable(false), session::Session=CurrentSession, anim=[:default], class="", style="", md=false)
-    if stayactiveif === nothing
-        return _hoverable(item; class=class, style=style, md=md)
-    end
-    return selectclass(_hoverable(item; anim=anim, class=class, style=style, md=md);
-                    selector=stayactiveif, session=session,
-                    toggleclasses=["CssMakieLayout_stay", "_"])
+
+struct Hoverable 
+    items::Array
+    attributes::Dict{Symbol, Any}
 end
+
+function attr(h::Hoverable, attribute::Symbol)
+    if haskey(h.attributes, attribute)
+        return h.attributes[attribute]
+    else
+        defaultvals = Dict(
+            :anim => [:default],
+            :class => "",
+            :style => "",
+            :md => false,
+            :stayactiveif => Observable(false)
+        )
+
+        return defaultvals[attribute]
+    end
+end
+
+attr(h::Hoverable) = h.attributes
+
+hoverable(items...; kw...)  = Hoverable(collect(items), Dict{Symbol, Any}(kw))
+hoverable(items::Array; kw...) = Hoverable(items, Dict{Symbol, Any}(kw))
+
+function JSServe.jsrender(session::Session, h::Hoverable)
+    item = [JSServe.jsrender(session, l) for l in h.items][1]
+
+    stayactiveif = attr(h, :stayactiveif)
+    if stayactiveif === nothing
+        return JSServe.jsrender(session ,_hoverable(item; class=class, style=style, md=md))
+    end
+
+    return JSServe.jsrender(session, selectclass(_hoverable(item; anim=attr(h, :anim),
+                    class=attr(h, :class), style=attr(h, :style), md=attr(h, :md));
+                    selector=stayactiveif,
+                    toggleclasses=["CssMakieLayout_stay", "_"]))
+end
+
+# function hoverable(item...; stayactiveif::Observable{Bool}=Observable(false), session::Session=CurrentSession, anim=[:default], class="", style="", md=false)
+#     if stayactiveif === nothing
+#         return _hoverable(item; class=class, style=style, md=md)
+#     end
+#     return selectclass(_hoverable(item; anim=anim, class=class, style=style, md=md);
+#                     selector=stayactiveif, session=session,
+#                     toggleclasses=["CssMakieLayout_stay", "_"])
+# end
 
 """
         _zstack(item...; class="", style="", md=false)
@@ -127,8 +155,13 @@ _zstack(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayou
 active(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout_active "*class, style=style)
 
 """
-        zstack(item::Array; activeidx::Observable=nothing, session::Session=CurrentSession,
-                class="", anim=[:default], style="", md=false)
+struct ZStack 
+    items::Array
+    attributes::Dict{Symbol, Any}
+end
+
+default attributes: activeidx::Observable=nothing,
+            class="", anim=[:default], style="", md=false
 
     A zstack receives an array/a tuple of elements, and displays just one of them based on the
     `activeidx` given as parameter. The displayed (active in the context of the zstack) element can be thought of as the top of the zstack
@@ -141,7 +174,6 @@ active(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout
         - `activeidx::Observable`: This selects the element which is displayed. For example if observable is 4,
                                     the zstack will display the 4th element of the `item` array/tuple.
         - `anim::Array`: Choose which animations to perform on transition (when `observable` is changed). Can be set to [:default], [:whoop], [:static], [:opacity] or a non-conflicting combination of them
-        - `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 
     # Example
 
@@ -154,12 +186,34 @@ active(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout
                 activeidx=activeidx)
     ```
 """
-zstack(item::Array; activeidx::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false) = 
-    zstack(tuple(item); height=size(item)[1], activeidx=activeidx, session=session, class=class, anim=anim, style=style, md=md)
+struct ZStack 
+    items::Array
+    attributes::Dict{Symbol, Any}
+end
+
+function attr(zstack::ZStack, attribute::Symbol)
+    if haskey(zstack.attributes, attribute)
+        return zstack.attributes[attribute]
+    else
+        defaultvals = Dict(
+            :anim => [:default],
+            :class => "",
+            :style => "",
+            :md => false,
+            :activeidx => nothing
+        )
+
+        return defaultvals[attribute]
+    end
+end
+
+attr(zstack::ZStack) = zstack.attributes
+
 
 """
-    zstack(item...; activeidx::Observable=nothing, session::Session=CurrentSession,
-            class="", anim=[:default], style="", md=false)
+    zstack(item...; kw...)
+    kw... : activeidx::Observable=nothing, 
+            class="", anim=[:default], style="", md=false
 
 A zstack receives an array/a tuple of elements, and displays just one of them based on the
 `activeidx` given as parameter (it will desplay the `activeindex`'th element). Think of it as a carousel. 
@@ -175,7 +229,6 @@ The displayed (active in the context of the zstack) will represent top of the zs
     - `activeidx::Observable`: This selects the element which is displayed. For example if observable is 4,
                                 the zstack will display the 4th element of the `item` array/tuple.
     - `anim::Array`: Choose which animations to perform on transition (when `activeidx` is changed). Can be set to [:default], [:whoop], [:static], [:opacity] or a non-conflicting combination of them
-    - `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 
 # Example
 
@@ -189,32 +242,61 @@ The displayed (active in the context of the zstack) will represent top of the zs
             activeidx=activeidx)
 ```
 """
-function zstack(item...; height=nothing, activeidx::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false) 
-    if activeidx === nothing
-        return _zstack(item; class=class*" "*animtoclass(anim), style=style, md=md)
-    else
-        if height===nothing
-            height=length(item)
-        end
-        # static zstack
-        item_div =  wrap(item; class="CssMakieLayout_zstack "*class*" "*animtoclass(anim), style=style)
+zstack(items...; kw...)  = ZStack(collect(items), Dict{Symbol, Any}(kw))
+zstack(items::Array; kw...) = ZStack(items, Dict{Symbol, Any}(kw))
 
-        # add on(activeidx) event
-        onjs(session, activeidx, js"""function on_update(new_value) {
-            const activefig_stack = $(item_div)
-            for(i = 1; i <= $(height); ++i) {
-                const element = activefig_stack.querySelector(":nth-child(" + i +")")
-                element.classList.remove("CssMakieLayout_active");
-                if(i == new_value) {
-                    element.classList.add("CssMakieLayout_active");
-                }
+function JSServe.jsrender(session::Session, zstack::ZStack)
+    item = [JSServe.jsrender(session, l) for l in zstack.items]
+
+    height = size(zstack.items)
+    print(size(item), length(item))
+    # static zstack
+    item_div =  wrap(tuple(item); class="CssMakieLayout_zstack "*attr(zstack, :class)*" "*animtoclass(attr(zstack, :anim)),
+                style=attr(zstack, :style))
+    item_div = JSServe.jsrender(session, item_div)
+
+    # add on(activeidx) event
+    onjs(session, attr(zstack, :activeidx), js"""function on_update(new_value) {
+        const activefig_stack = $(item_div)
+        for(i = 1; i <= $(height); ++i) {
+            const element = activefig_stack.querySelector(":nth-child(" + i +")")
+            element.classList.remove("CssMakieLayout_active");
+            if(i == new_value) {
+                element.classList.add("CssMakieLayout_active");
             }
         }
-        """)
-    end
+    }
+    """)
 
     return item_div
 end
+
+# function zstack(item...; height=nothing, activeidx::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false) 
+#     if activeidx === nothing
+#         return _zstack(item; class=class*" "*animtoclass(anim), style=style, md=md)
+#     else
+#         if height===nothing
+#             height=length(item)
+#         end
+#         # static zstack
+#         item_div =  wrap(item; class="CssMakieLayout_zstack "*class*" "*animtoclass(anim), style=style)
+
+#         # add on(activeidx) event
+#         onjs(session, activeidx, js"""function on_update(new_value) {
+#             const activefig_stack = $(item_div)
+#             for(i = 1; i <= $(height); ++i) {
+#                 const element = activefig_stack.querySelector(":nth-child(" + i +")")
+#                 element.classList.remove("CssMakieLayout_active");
+#                 if(i == new_value) {
+#                     element.classList.add("CssMakieLayout_active");
+#                 }
+#             }
+#         }
+#         """)
+#     end
+
+#     return item_div
+# end
 
 """
         hstack(item...; class="", style="", md=false)
@@ -244,7 +326,7 @@ vstack(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout
 
 """
     selectclass(item; toggleclasses=[], selector::Observable=nothing,
-                session::Session=CurrentSession, class="", style="", md=false) 
+                 class="", style="", md=false) 
 
 
 Ads a class from the `toggleclasses` Array to the `item` element based on the value of the `selector` Observable.
@@ -261,15 +343,39 @@ A simple example would be light/dark mode selection based on an observable. This
             function to each element of the content parameter before wrapping them.
     - `toggleclasses::Array` : Array of classes to select from 
     - `selector::Observable`: Selects which class is added to the element.
-    - `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 """
-function selectclass(item; toggleclasses=[], selector::Observable=nothing, session::Session=CurrentSession, class="", style="", md=false) 
-    if selector === nothing
-        return item
+
+struct SelectClass 
+    items::Array
+    attributes::Dict{Symbol, Any}
+end
+
+function attr(sc::SelectClass, attribute::Symbol)
+    if haskey(sc.attributes, attribute)
+        return sc.attributes[attribute]
     else
-        height = size(toggleclasses)
-        # add on(observable) event
-        onjs(session, selector, js"""function on_update(new_value) {
+        defaultvals = Dict(
+            :toggleclasses => [],
+            :class => "",
+            :style => "",
+            :md => false,
+            :selector => nothing
+        )
+
+        return defaultvals[attribute]
+    end
+end
+
+attr(sc::SelectClass) = sc.attributes
+selectclass(items...; kw...)  = SelectClass(collect(items), Dict{Symbol, Any}(kw))
+selectclass(items::Array; kw...) = SelectClass(items, Dict{Symbol, Any}(kw))
+
+function JSServe.jsrender(session::Session, sc::SelectClass)
+    item = [JSServe.jsrender(session, l) for l in sc.items][1]
+    toggleclasses =  attr(sc, :toggleclasses)
+    height = size(toggleclasses)
+
+    onjs(session, attr(sc, :selector), js"""function on_update(new_value) {
             const element = $(item)
             const cllist = $(toggleclasses)
             cllist.forEach((el) => {
@@ -278,10 +384,31 @@ function selectclass(item; toggleclasses=[], selector::Observable=nothing, sessi
             element.classList.add(cllist[new_value-1]);
         }
         """)
-    end
-
-    return item
+    return JSServe.jsrender(session, item)
 end
+
+
+
+
+# function selectclass(item; toggleclasses=[], selector::Observable=nothing, session::Session=CurrentSession, class="", style="", md=false) 
+#     if selector === nothing
+#         return item
+#     else
+#         height = size(toggleclasses)
+#         # add on(observable) event
+#         onjs(session, selector, js"""function on_update(new_value) {
+#             const element = $(item)
+#             const cllist = $(toggleclasses)
+#             cllist.forEach((el) => {
+#                 element.classList.remove(el);
+#             })
+#             element.classList.add(cllist[new_value-1]);
+#         }
+#         """)
+#     end
+
+#     return item
+# end
 """
         _button(item; class="", style="")
         

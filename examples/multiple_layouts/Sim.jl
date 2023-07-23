@@ -1,10 +1,7 @@
-
-using Base.Threads
 using WGLMakie
 WGLMakie.activate!()
 using JSServe
 using Markdown
-import JSServe.TailwindDashboard as D
 
 # 1. LOAD LAYOUT HELPER FUNCTION AND UTILSm    
 using CssMakieLayout
@@ -149,7 +146,6 @@ end
 ###################### 4. LANDING PAGE OF THE APP ######################
 
 landing = App() do session::Session
-    CssMakieLayout.CurrentSession = session
 
     # Create the menufigures and the mainfigures
     mainfigures = [Figure(backgroundcolor=:white,  resolution=config[:resolution]) for _ in 1:3]
@@ -184,12 +180,12 @@ landing = App() do session::Session
 
     
     # Create ZStacks displayong titles below the menu graphs
-    titles_zstack = [DOM.h4(t, class="upper") for t in titles]
-    for i in 1:3
-        titles_zstack[i] = zstack(titles_zstack[i], wrap(""); 
-                                        activeidx=@lift(($hoveredidx == i || $activeidx == i)),
-                                        anim=[:opacity], style="""color: $(config[:colorscheme][2]);""")
-    end
+    titles_zstack = [zstack(wrap(DOM.h4(titles[i], class="upper")),
+                            wrap(""); 
+                            activeidx=@lift(($hoveredidx == i || $activeidx == i)),
+                            anim=[:opacity], style="""color: $(config[:colorscheme][2]);""") for i in 1:3]
+
+
 
     # Obtain reactive layout of the figures
     
@@ -208,7 +204,6 @@ landing = App() do session::Session
 end
 
 landing2 = App() do session::Session
-    CssMakieLayout.CurrentSession = session
 
     # Active index: 1 2 or 3
     #   1: the first a.k.a alpha (Entanglement Generation) figure is active

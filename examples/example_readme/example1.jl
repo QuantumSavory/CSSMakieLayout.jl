@@ -14,7 +14,6 @@ config = Dict(
 )
 
 landing = App() do session::Session
-    CssMakieLayout.CurrentSession = session
 
     # Active index: 1 2 or 3
     #   1: the first a.k.a 'a' figure is active
@@ -47,7 +46,7 @@ landing = App() do session::Session
     
     
     return hstack(CssMakieLayout.formatstyle, CssMakieLayout.Themes[:elegant](config), layout)
-
+t
 end
 
 

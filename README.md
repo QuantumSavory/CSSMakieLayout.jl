@@ -208,13 +208,12 @@ landing = App() do session::Session
 
     
     # Create ZStacks displaying titles below the menu graphs
-    titles_zstack = [DOM.h4(t, class="upper") for t in titles]
-    
-    for i in 1:3
-        titles_zstack[i] = zstack(titles_zstack[i], wrap(""); 
-                                activeidx=@lift(($hoveredidx == i || $activeidx == i)),
-                                anim=[:opacity])
-    end
+    titles_zstack = [zstack(wrap(DOM.h4(titles[i], class="upper")),
+                            wrap(""); 
+                            activeidx=@lift(($hoveredidx == i || $activeidx == i)),
+                            anim=[:opacity], style="""color: $(config[:colorscheme][2]);""") for i in 1:3]
+
+
 
     # Wrap each of the menu figures and its corresponing title zstack in a div
     menufigs_andtitles = wrap([
