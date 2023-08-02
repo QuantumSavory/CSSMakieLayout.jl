@@ -5,7 +5,7 @@ using JSServe
 using Markdown
 
 # 1. LOAD LIBRARY   
-using CssMakieLayout
+using CSSMakieLayout
 
 
 
@@ -98,7 +98,7 @@ landing = App() do session::Session
                 anim=[:whoop])
 
     # Obtain reactive layout of the figures 
-    return wrap(menufigs_andtitles, activefig, CssMakieLayout.formatstyle)
+    return wrap(menufigs_andtitles, activefig, CSSMakieLayout.formatstyle)
 
 end
 

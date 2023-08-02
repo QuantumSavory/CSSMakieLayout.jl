@@ -4,4 +4,4 @@ authors = ["adrianariton <adrian.ariton0@gmail.com>"]
 version = "0.1.0"
 
 [deps]
-CssMakieLayout = "5954c95d-ff03-4a38-b8f4-a6ed1c4752b2"
+CSSMakieLayout = "5954c95d-ff03-4a38-b8f4-a6ed1c4752b2"

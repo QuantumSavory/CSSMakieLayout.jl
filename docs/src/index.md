@@ -1,12 +1,12 @@
 # Reactive and static elements
 
-##        CssMakieLayout.CurrentSession
+##        CSSMakieLayout.CurrentSession
 
 Session used as default for all session::Session params of the following functions. Set it at the begining of your code as such:
 
 ```julia
 landing2 = App() do session::Session
-CssMakieLayout.CurrentSession = session
+CSSMakieLayout.CurrentSession = session
 ...
 end
 ```
@@ -73,7 +73,7 @@ Hoverable element which also stays active if the `stayactiveif` observable is se
 - `anim::Array`: Choose which animations to perform on hover: can be set to [:default] or [:border] or a combination of the 2
 - `stayactiveif::Observable`: If the observable set as parameter is one, the element will be active weather hovered or not,
                                 otherwise it will not be active unless hovered
-- `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
+- `session::Session=CurrentSession`: App session (defaults to CSSMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 
 
 
@@ -125,7 +125,7 @@ A zstack receives an array/a tuple of elements, and displays just one of them ba
 - `activeidx::Observable`: This selects the element which is displayed. For example if observable is 4,
                                 the zstack will display the 4th element of the `item` array/tuple.
 - `anim::Array`: Choose which animations to perform on transition (when `observable` is changed). Can be set to [:default], [:whoop], [:static], [:opacity] or a non-conflicting combination of them
-- `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
+- `session::Session=CurrentSession`: App session (defaults to CSSMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 
 # Example
 
@@ -158,7 +158,7 @@ The displayed (active in the context of the zstack) will represent top of the zs
 - `activeidx::Observable`: This selects the element which is displayed. For example if observable is 4,
                         the zstack will display the 4th element of the `item` array/tuple.
 - `anim::Array`: Choose which animations to perform on transition (when `activeidx` is changed). Can be set to [:default], [:whoop], [:static], [:opacity] or a non-conflicting combination of them
-- `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
+- `session::Session=CurrentSession`: App session (defaults to CSSMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 
 # Example
 
@@ -217,7 +217,7 @@ Returns the modified item.
     function to each element of the content parameter before wrapping them.
 - `toggleclasses::Array` : Array of classes to select from 
 - `selector::Observable`: Selects which class is added to the element.
-- `session::Session=CurrentSession`: App session (defaults to CssMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
+- `session::Session=CurrentSession`: App session (defaults to CSSMakieLayout.CurrentSession which can be set at the begining. See [`CurrentSession`](@ref))
 
 
 ## _button
@@ -269,16 +269,16 @@ layout = hstack(buttons[1], activefig, buttons[2])
 
 
 
-##        CssMakieLayout.formatstyle
+##        CSSMakieLayout.formatstyle
 
 CSS code used by the library for styling
 
 Include it in your layout when returning the final element as such:
 ```julia
-return hstack(CssMakieLayout.formatstyle, layout)
+return hstack(CSSMakieLayout.formatstyle, layout)
 ```
 
 
-##        CssMakieLayout.Themes
+##        CSSMakieLayout.Themes
 
 Some basic themes for abstract styling that are still in development

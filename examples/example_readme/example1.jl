@@ -4,7 +4,7 @@ using JSServe
 using Markdown
 
 # 1. LOAD LIBRARY   
-using CssMakieLayout
+using CSSMakieLayout
 
 
 config = Dict(
@@ -45,7 +45,7 @@ landing = App() do session::Session
     layout = hstack(buttons[1], activefig, buttons[2])
     
     
-    return hstack(CssMakieLayout.formatstyle, CssMakieLayout.Themes[:elegant](config), layout)
+    return hstack(CSSMakieLayout.formatstyle, CSSMakieLayout.Themes[:elegant](config), layout)
 t
 end
 

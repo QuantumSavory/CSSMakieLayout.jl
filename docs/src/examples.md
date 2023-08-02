@@ -1,4 +1,4 @@
-# CssMakieLayout.jl
+# CSSMakieLayout.jl
 This library helps in the development of reactive frontends and can be
 used alongside **WGLMakie** and **JSServe**.
 
@@ -23,7 +23,7 @@ The layout would look something like this:
 
 By acting on the buttons, one moves from one figure to the other.
 
-### This can be easily implemented using **CssMakieLayout.jl**
+### This can be easily implemented using **CSSMakieLayout.jl**
 
 1. First of all include the library in your project
 
@@ -34,7 +34,7 @@ using JSServe
 using Markdown
 
 # 1. LOAD LIBRARY   
-using CssMakieLayout
+using CSSMakieLayout
 ```
 2. Then define your layout using CSSMakieLayout.jl,
 
@@ -45,7 +45,7 @@ config = Dict(
 )
 
 landing = App() do session::Session
-    CssMakieLayout.CurrentSession = session
+    CSSMakieLayout.CurrentSession = session
 
     # Active index: 1 2 or 3
     #   1: the first a.k.a 'a' figure is active
@@ -79,7 +79,7 @@ landing = App() do session::Session
     layout = hstack(buttons[1], activefig, buttons[2])
     
     
-    return hstack(CssMakieLayout.formatstyle, layout)
+    return hstack(CSSMakieLayout.formatstyle, layout)
 
 end
 ```
@@ -119,7 +119,7 @@ using JSServe
 using Markdown
 
 # 1. LOAD LIBRARY   
-using CssMakieLayout
+using CSSMakieLayout
 ```
 
 2. Create the layout
@@ -142,7 +142,7 @@ menufigs_style = """
 """
 
 landing = App() do session::Session
-    CssMakieLayout.CurrentSession = session
+    CSSMakieLayout.CurrentSession = session
 
     # Create the menufigures and the mainfigures
     mainfigures = [Figure(backgroundcolor=:white,  resolution=config[:resolution]) for _ in 1:3]
@@ -216,7 +216,7 @@ landing = App() do session::Session
                 anim=[:whoop])
 
     # Obtain reactive layout of the figures 
-    return wrap(menufigs_andtitles, activefig, CssMakieLayout.formatstyle)
+    return wrap(menufigs_andtitles, activefig, CSSMakieLayout.formatstyle)
 
 end
 ```

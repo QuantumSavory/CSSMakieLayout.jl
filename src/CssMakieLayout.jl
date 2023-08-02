@@ -1,4 +1,4 @@
-module CssMakieLayout
+module CSSMakieLayout
 using Base.Threads
 using WGLMakie
 WGLMakie.activate!()
@@ -12,7 +12,7 @@ export  hstack, vstack, wrap, zstack, active,
 
 
 animtoclass(anim) = join(pushfirst!([String(s) for s in anim], ""), " anim-")
-cml(class) = join(["CssMakieLayout_", class])
+cml(class) = join(["CSSMakieLayout_", class])
 ###################### 1. Helper functions for UX ######################
 #   Functions that add css classes to DOM.div elements in order to 
 #   createa a nice UX experience and also cleaner code
@@ -58,7 +58,7 @@ wrap(content...; class="", style="", md=false) = DOM.div(JSServe.MarkdownCSS,
                 function to each element of the content parameter before wrapping them.
         - `anim`: Choose which animation to perform on hover: can be set to [:default] or [:border]
 """
-_hoverable(item...; class="", style="", anim=[:default], md=false) = wrap(item; class="CssMakieLayout_hoverable "*class*" "*animtoclass(anim), style=style, md=md)
+_hoverable(item...; class="", style="", anim=[:default], md=false) = wrap(item; class="CSSMakieLayout_hoverable "*class*" "*animtoclass(anim), style=style, md=md)
 
 """
 hoverable(item...; stayactiveif::Observable{Bool}=Observable(false), anim=[:default], class="", style="", md=false)
@@ -113,7 +113,7 @@ function JSServe.jsrender(session::Session, h::Hoverable)
     return JSServe.jsrender(session, selectclass(_hoverable(item; anim=attr(h, :anim),
                     class=attr(h, :class), style=attr(h, :style), md=attr(h, :md));
                     selector=stayactiveif,
-                    toggleclasses=["CssMakieLayout_stay", "_"]))
+                    toggleclasses=["CSSMakieLayout_stay", "_"]))
 end
 
 # function hoverable(item...; stayactiveif::Observable{Bool}=Observable(false), session::Session=CurrentSession, anim=[:default], class="", style="", md=false)
@@ -122,7 +122,7 @@ end
 #     end
 #     return selectclass(_hoverable(item; anim=anim, class=class, style=style, md=md);
 #                     selector=stayactiveif, session=session,
-#                     toggleclasses=["CssMakieLayout_stay", "_"])
+#                     toggleclasses=["CSSMakieLayout_stay", "_"])
 # end
 
 """
@@ -139,7 +139,7 @@ end
         - `md`: Set to false unless specified otherwise. Specifies weather to aply the [`markdowned`](@ref)
                 function to each element of the content parameter before wrapping them.
 """
-_zstack(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout_zstack "*class, style=style)
+_zstack(item...; class="", style="", md=false) = wrap(item; class="CSSMakieLayout_zstack "*class, style=style)
 
 """
         active(item...; class="", style="", md=false)
@@ -152,7 +152,7 @@ _zstack(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayou
         - `md`: Set to false unless specified otherwise. Specifies weather to aply the [`markdowned`](@ref)
                 function to each element of the content parameter before wrapping them.
 """
-active(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout_active "*class, style=style)
+active(item...; class="", style="", md=false) = wrap(item; class="CSSMakieLayout_active "*class, style=style)
 
 """
 struct ZStack 
@@ -250,7 +250,7 @@ function JSServe.jsrender(session::Session, zstack::ZStack)
 
     height = size(zstack.items)
     # static zstack
-    item_div =  wrap(tuple(item); class="CssMakieLayout_zstack "*attr(zstack, :class)*" "*animtoclass(attr(zstack, :anim)),
+    item_div =  wrap(tuple(item); class="CSSMakieLayout_zstack "*attr(zstack, :class)*" "*animtoclass(attr(zstack, :anim)),
                 style=attr(zstack, :style))
     item_div = JSServe.jsrender(session, item_div)
 
@@ -259,9 +259,9 @@ function JSServe.jsrender(session::Session, zstack::ZStack)
         const activefig_stack = $(item_div)
         for(i = 1; i <= $(height); ++i) {
             const element = activefig_stack.querySelector(":nth-child(" + i +")")
-            element.classList.remove("CssMakieLayout_active");
+            element.classList.remove("CSSMakieLayout_active");
             if(i == new_value) {
-                element.classList.add("CssMakieLayout_active");
+                element.classList.add("CSSMakieLayout_active");
             }
         }
     }
@@ -278,16 +278,16 @@ end
 #             height=length(item)
 #         end
 #         # static zstack
-#         item_div =  wrap(item; class="CssMakieLayout_zstack "*class*" "*animtoclass(anim), style=style)
+#         item_div =  wrap(item; class="CSSMakieLayout_zstack "*class*" "*animtoclass(anim), style=style)
 
 #         # add on(activeidx) event
 #         onjs(session, activeidx, js"""function on_update(new_value) {
 #             const activefig_stack = $(item_div)
 #             for(i = 1; i <= $(height); ++i) {
 #                 const element = activefig_stack.querySelector(":nth-child(" + i +")")
-#                 element.classList.remove("CssMakieLayout_active");
+#                 element.classList.remove("CSSMakieLayout_active");
 #                 if(i == new_value) {
-#                     element.classList.add("CssMakieLayout_active");
+#                     element.classList.add("CSSMakieLayout_active");
 #                 }
 #             }
 #         }
@@ -308,7 +308,7 @@ end
         - `md`: Set to false unless specified otherwise. Specifies weather to aply the [`markdowned`](@ref)
                 function to each element of the content parameter before wrapping them
 """
-hstack(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout_hstack "*class, style=style)
+hstack(item...; class="", style="", md=false) = wrap(item; class="CSSMakieLayout_hstack "*class, style=style)
 
 """
         vstack(item...; class="", style="", md=false)
@@ -321,7 +321,7 @@ hstack(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout
         - `md`: Set to false unless specified otherwise. Specifies weather to aply the [`markdowned`](@ref)
                 function to each element of the content parameter before wrapping them
 """
-vstack(item...; class="", style="", md=false) = wrap(item; class="CssMakieLayout_vstack "*class, style=style)
+vstack(item...; class="", style="", md=false) = wrap(item; class="CSSMakieLayout_vstack "*class, style=style)
 
 """
     selectclass(item; toggleclasses=[], selector::Observable=nothing,
@@ -491,53 +491,53 @@ function modifier(item; action=:toggle, parameter::Observable=nothing, class="",
             end
         end
     end
-    return wrap(t; class="CssMakieLayout_btn")
+    return wrap(t; class="CSSMakieLayout_btn")
 end
 """
-        CssMakieLayout.formatstyle
+        CSSMakieLayout.formatstyle
     
     CSS code used by the library for styling
 
     Include it in your layout when returning the final element as such:
     ```julia
-    return hstack(CssMakieLayout.formatstyle, layout)
+    return hstack(CSSMakieLayout.formatstyle, layout)
     ```
 """
 const formatstyle=DOM.style("""
-    .CssMakieLayout_hoverable.anim-default{
+    .CSSMakieLayout_hoverable.anim-default{
         transition: all 0.1s ease;
     }
-    .CssMakieLayout_hoverable.anim-default:hover, .CssMakieLayout_stay.anim-default{
+    .CSSMakieLayout_hoverable.anim-default:hover, .CSSMakieLayout_stay.anim-default{
         transform: scale(1.1);
     }
 
-    .CssMakieLayout_hoverable.anim-border{
+    .CSSMakieLayout_hoverable.anim-border{
         transition: all 0.1s ease;
         border: 2px solid transparent;
 
     }
-    .CssMakieLayout_hoverable.anim-border:hover, .CssMakieLayout_stay.anim-border{
+    .CSSMakieLayout_hoverable.anim-border:hover, .CSSMakieLayout_stay.anim-border{
         border: 2px solid black;
     }
 
-    .CssMakieLayout_hoverable.anim-border.white{
+    .CSSMakieLayout_hoverable.anim-border.white{
         transition: all 0.1s ease;
         border: 2px solid transparent;
         padding: 4px;
         padding-bottom: 0px;
 
     }
-    .CssMakieLayout_hoverable.anim-border.white:hover, .CssMakieLayout_stay.white.anim-border{
+    .CSSMakieLayout_hoverable.anim-border.white:hover, .CSSMakieLayout_stay.white.anim-border{
         border: 2px solid white;
     }
 
 
-    .CssMakieLayout_hstack{
+    .CSSMakieLayout_hstack{
         display:flex;
         flex-direction: row;
     }
 
-    .CssMakieLayout_vstack{
+    .CSSMakieLayout_vstack{
         display: flex;
         flex-direction: column;
     }
@@ -550,38 +550,38 @@ const formatstyle=DOM.style("""
         justify-content: center;
     }
 
-    .CssMakieLayout_zstack{
+    .CSSMakieLayout_zstack{
         display:flex;
         flex-direction: row;
     }
 
-    .CssMakieLayout_zstack, .CssMakieLayout_zstack > *{
+    .CSSMakieLayout_zstack, .CSSMakieLayout_zstack > *{
         transition: all 0.3s ease;
     }
 
-    .CssMakieLayout_zstack.anim-default .CssMakieLayout_active{
+    .CSSMakieLayout_zstack.anim-default .CSSMakieLayout_active{
         transition: all 0.3s ease;
         width: 100%;
         overflow: hidden;
 
     }
 
-    .CssMakieLayout_zstack.anim-default > :not(.CssMakieLayout_active){
+    .CSSMakieLayout_zstack.anim-default > :not(.CSSMakieLayout_active){
         transition: all 0.3s ease;
         width: 0%;
         overflow: hidden;
     }
 
-    .CssMakieLayout_zstack.anim-whoop{
+    .CSSMakieLayout_zstack.anim-whoop{
         display: grid;
     }
 
-    .CssMakieLayout_zstack.anim-whoop > *{
+    .CSSMakieLayout_zstack.anim-whoop > *{
         grid-area: 1/1/1/1;
 
     }
 
-    .CssMakieLayout_zstack.anim-whoop .CssMakieLayout_active{
+    .CSSMakieLayout_zstack.anim-whoop .CSSMakieLayout_active{
         z-index: 4;
         position: absolute;
         transition: all 0.3s ease;
@@ -590,7 +590,7 @@ const formatstyle=DOM.style("""
 
     }
 
-    .CssMakieLayout_zstack.anim-whoop > :not(.CssMakieLayout_active){
+    .CSSMakieLayout_zstack.anim-whoop > :not(.CSSMakieLayout_active){
         position: absolute;
         z-index: 1;
 
@@ -599,23 +599,23 @@ const formatstyle=DOM.style("""
         overflow: hidden;
     }
 
-    .CssMakieLayout_zstack.anim-static .CssMakieLayout_active{
+    .CSSMakieLayout_zstack.anim-static .CSSMakieLayout_active{
         overflow: hidden;
 
     }
 
-    .CssMakieLayout_zstack.anim-static > :not(.CssMakieLayout_active){
+    .CSSMakieLayout_zstack.anim-static > :not(.CSSMakieLayout_active){
         width: 0px;
         overflow: hidden;
     }
 
-    .CssMakieLayout_zstack.anim-opacity .CssMakieLayout_active{
+    .CSSMakieLayout_zstack.anim-opacity .CSSMakieLayout_active{
         transition: all 0.1s ease;
         opacity: 1;
 
     }
 
-    .CssMakieLayout_zstack.anim-opacity > :not(.CssMakieLayout_active){
+    .CSSMakieLayout_zstack.anim-opacity > :not(.CSSMakieLayout_active){
         transition: all 0.1s ease;
         opacity: 0;
     }
@@ -623,11 +623,11 @@ const formatstyle=DOM.style("""
     .upper{
         text-transform: uppercase;
     }
-    .CssMakieLayout_btn button{
+    .CSSMakieLayout_btn button{
         height: 100%;
         width: 100%;
     }
-    .CssMakieLayout_btn button:hover{
+    .CSSMakieLayout_btn button:hover{
         box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset !important;
     }
 
@@ -637,7 +637,7 @@ const formatstyle=DOM.style("""
 const Themes = Dict(
     :elegant => function fct(config)
         return DOM.style("""
-        .CssMakieLayout_btn button{
+        .CSSMakieLayout_btn button{
             background-color: $(config[:colorscheme][1]);
             color: $(config[:colorscheme][2]);
             border: none !important;
@@ -645,4 +645,4 @@ const Themes = Dict(
     end,
 )
 
-end # module CssMakieLayout
+end # module CSSMakieLayout

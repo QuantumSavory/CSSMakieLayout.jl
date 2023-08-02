@@ -1,37 +1,37 @@
-.CssMakieLayout_hoverable.anim-default{
+.CSSMakieLayout_hoverable.anim-default{
     transition: all 0.1s ease;
 }
-.CssMakieLayout_hoverable.anim-default:hover, .CssMakieLayout_stay.anim-default{
+.CSSMakieLayout_hoverable.anim-default:hover, .CSSMakieLayout_stay.anim-default{
     transform: scale(1.1);
 }
 
-.CssMakieLayout_hoverable.anim-border{
+.CSSMakieLayout_hoverable.anim-border{
     transition: all 0.1s ease;
     border: 2px solid transparent;
 
 }
-.CssMakieLayout_hoverable.anim-border:hover, .CssMakieLayout_stay.anim-border{
+.CSSMakieLayout_hoverable.anim-border:hover, .CSSMakieLayout_stay.anim-border{
     border: 2px solid black;
 }
 
-.CssMakieLayout_hoverable.anim-border.white{
+.CSSMakieLayout_hoverable.anim-border.white{
     transition: all 0.1s ease;
     border: 2px solid transparent;
     padding: 4px;
     padding-bottom: 0px;
 
 }
-.CssMakieLayout_hoverable.anim-border.white:hover, .CssMakieLayout_stay.white.anim-border{
+.CSSMakieLayout_hoverable.anim-border.white:hover, .CSSMakieLayout_stay.white.anim-border{
     border: 2px solid white;
 }
 
 
-.CssMakieLayout_hstack{
+.CSSMakieLayout_hstack{
     display:flex;
     flex-direction: row;
 }
 
-.CssMakieLayout_vstack{
+.CSSMakieLayout_vstack{
     display: flex;
     flex-direction: column;
 }
@@ -44,38 +44,38 @@
     justify-content: center;
 }
 
-.CssMakieLayout_zstack{
+.CSSMakieLayout_zstack{
     display:flex;
     flex-direction: row;
 }
 
-.CssMakieLayout_zstack, .CssMakieLayout_zstack > *{
+.CSSMakieLayout_zstack, .CSSMakieLayout_zstack > *{
     transition: all 0.3s ease;
 }
 
-.CssMakieLayout_zstack.anim-default .CssMakieLayout_active{
+.CSSMakieLayout_zstack.anim-default .CSSMakieLayout_active{
     transition: all 0.3s ease;
     width: 100%;
     overflow: hidden;
 
 }
 
-.CssMakieLayout_zstack.anim-default > :not(.CssMakieLayout_active){
+.CSSMakieLayout_zstack.anim-default > :not(.CSSMakieLayout_active){
     transition: all 0.3s ease;
     width: 0%;
     overflow: hidden;
 }
 
-.CssMakieLayout_zstack.anim-whoop{
+.CSSMakieLayout_zstack.anim-whoop{
     display: grid;
 }
 
-.CssMakieLayout_zstack.anim-whoop > *{
+.CSSMakieLayout_zstack.anim-whoop > *{
     grid-area: 1/1/1/1;
 
 }
 
-.CssMakieLayout_zstack.anim-whoop .CssMakieLayout_active{
+.CSSMakieLayout_zstack.anim-whoop .CSSMakieLayout_active{
     z-index: 4;
     position: absolute;
     transition: all 0.3s ease;
@@ -84,7 +84,7 @@
 
 }
 
-.CssMakieLayout_zstack.anim-whoop > :not(.CssMakieLayout_active){
+.CSSMakieLayout_zstack.anim-whoop > :not(.CSSMakieLayout_active){
     position: absolute;
     z-index: 1;
 
@@ -93,23 +93,23 @@
     overflow: hidden;
 }
 
-.CssMakieLayout_zstack.anim-static .CssMakieLayout_active{
+.CSSMakieLayout_zstack.anim-static .CSSMakieLayout_active{
     overflow: hidden;
 
 }
 
-.CssMakieLayout_zstack.anim-static > :not(.CssMakieLayout_active){
+.CSSMakieLayout_zstack.anim-static > :not(.CSSMakieLayout_active){
     width: 0px;
     overflow: hidden;
 }
 
-.CssMakieLayout_zstack.anim-opacity .CssMakieLayout_active{
+.CSSMakieLayout_zstack.anim-opacity .CSSMakieLayout_active{
     transition: all 0.1s ease;
     opacity: 1;
 
 }
 
-.CssMakieLayout_zstack.anim-opacity > :not(.CssMakieLayout_active){
+.CSSMakieLayout_zstack.anim-opacity > :not(.CSSMakieLayout_active){
     transition: all 0.1s ease;
     opacity: 0;
 }
@@ -117,10 +117,10 @@
 .upper{
     text-transform: uppercase;
 }
-.CssMakieLayout_btn button{
+.CSSMakieLayout_btn button{
     height: 100%;
     width: 100%;
 }
-.CssMakieLayout_btn button:hover{
+.CSSMakieLayout_btn button:hover{
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset !important;
 }

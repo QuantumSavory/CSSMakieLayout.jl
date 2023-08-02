@@ -4,7 +4,7 @@ using JSServe
 using Markdown
 
 # 1. LOAD LAYOUT HELPER FUNCTION AND UTILSm    
-using CssMakieLayout
+using CSSMakieLayout
 
 ## config sizes TODO: make linear w.r.t screen size
 # Change between color schemes by uncommentinh lines 17-18
@@ -55,7 +55,7 @@ function layout_content(DOM, mainfigures #TODO: remove DOM param
         :activefig => activefig,
         :menufigs => menufigs_andtitles
     )
-    return DOM.div(menufigs_andtitles, CssMakieLayout.formatstyle, activefig), content
+    return DOM.div(menufigs_andtitles, CSSMakieLayout.formatstyle, activefig), content
 
 end
 
@@ -248,7 +248,7 @@ landing2 = App() do session::Session
                     style="""color: $(config[:colorscheme][4]);""") # static = no animation
     
     
-    return hstack(CssMakieLayout.formatstyle, layout, hstack(titles_div; style="padding: 20px;  margin-left: 10px;
+    return hstack(CSSMakieLayout.formatstyle, layout, hstack(titles_div; style="padding: 20px;  margin-left: 10px;
                                 background-color:  $(config[:colorscheme][3]);"); style="width: 100%;")
 
 end
