@@ -464,7 +464,7 @@ function modifier(item; action=:toggle, parameter::Observable=nothing, class="",
     t = D.Button(item; class=class, style=style)
     on(t) do event
         if action == :toggle
-            parameter[] = parameter[]
+            parameter[] = step - parameter[]
         elseif action == :increase
             parameter[] = parameter[] + step
         elseif action == :decrease
