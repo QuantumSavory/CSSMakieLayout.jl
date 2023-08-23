@@ -250,7 +250,7 @@ function JSServe.jsrender(session::Session, zstack::ZStack)
 
     height = size(zstack.items)
     # static zstack
-    item_div =  wrap(tuple(item); class="CSSMakieLayout_zstack "*attr(zstack, :class)*" "*animtoclass(attr(zstack, :anim)),
+    item_div =  wrap(item...; class="CSSMakieLayout_zstack "*attr(zstack, :class)*" "*animtoclass(attr(zstack, :anim)),
                 style=attr(zstack, :style))
     item_div = JSServe.jsrender(session, item_div)
 
@@ -268,6 +268,22 @@ function JSServe.jsrender(session::Session, zstack::ZStack)
     """)
 
     return item_div
+end
+
+
+struct Tie 
+    observable::Observable
+end
+tie(observable::Observable) = Tie(observable::Observable)
+
+function JSServe.jsrender(session::Session, tie::Tie)
+    div = wrap("")
+    onjs(session, tie.observable, js"""function on_update(new_value) {
+        const divider = $(div)
+        divider.innetText = $(tie.observable[])
+    }""")
+    JSServe.jsrender(session, div)
+    return div
 end
 
 # function zstack(item...; height=nothing, activeidx::Observable=nothing, session::Session=CurrentSession, class="", anim=[:default], style="", md=false) 
