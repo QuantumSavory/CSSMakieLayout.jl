@@ -258,7 +258,7 @@ function JSServe.jsrender(session::Session, zstack::ZStack)
     onjs(session, attr(zstack, :activeidx), js"""function on_update(new_value) {
         const activefig_stack = $(item_div)
         for(i = 1; i <= $(height); ++i) {
-            const element = activefig_stack.querySelector(":nth-child(" + i +")")
+            const element = activefig_stack.children.item(i-1)
             element.classList.remove("CSSMakieLayout_active");
             if(i == new_value) {
                 element.classList.add("CSSMakieLayout_active");
