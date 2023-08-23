@@ -7,7 +7,7 @@ using Markdown
 import JSServe.TailwindDashboard as D
 
 export  hstack, vstack, wrap, zstack, active,
-        modifier, hoverable
+        modifier, hoverable, tie
 
 
 
@@ -270,17 +270,23 @@ function JSServe.jsrender(session::Session, zstack::ZStack)
     return item_div
 end
 
-
+"""
+    Tie observable to divider, escaping HTML.
+    If no target is provided, a new element is created and returned.
+"""
 struct Tie 
     observable::Observable
+    target
 end
-tie(observable::Observable) = Tie(observable::Observable)
+tie(observable::Observable, target=nothing) = Tie(observable::Observable, target)
 
 function JSServe.jsrender(session::Session, tie::Tie)
     div = wrap("")
+    !isnothing(tie.target) && (div = tie.target)
     onjs(session, tie.observable, js"""function on_update(new_value) {
         const divider = $(div)
-        divider.innetText = $(tie.observable[])
+        console.log(divider, new_value)
+        divider.innerHTML = new_value
     }""")
     JSServe.jsrender(session, div)
     return div
@@ -480,7 +486,7 @@ function modifier(item; action=:toggle, parameter::Observable=nothing, class="",
     t = D.Button(item; class=class, style=style)
     on(t) do event
         if action == :toggle
-            parameter[] = step - parameter[]
+            parameter[] = !parameter[]
         elseif action == :increase
             parameter[] = parameter[] + step
         elseif action == :decrease
@@ -506,6 +512,7 @@ function modifier(item; action=:toggle, parameter::Observable=nothing, class="",
                 parameter[] =  parameter[] + step
             end
         end
+        notify(parameter)
     end
     return wrap(t; class="CSSMakieLayout_btn")
 end
