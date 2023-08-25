@@ -512,7 +512,7 @@ function modifier(item; action=:toggle, parameter::Observable=nothing, class="",
                 parameter[] =  parameter[] + step
             end
         end
-        notify(parameter)
+        # notify(parameter)
     end
     return wrap(t; class="CSSMakieLayout_btn")
 end
