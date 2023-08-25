@@ -1,7 +1,7 @@
 name = "CSSMakieLayout"
 uuid = "5954c95d-ff03-4a38-b8f4-a6ed1c4752b2"
 authors = ["adrianariton <adrian.ariton0@gmail.com>", "Barosandu <anduariton1234@gmail.com>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 ConcurrentSim = "6ed1e86c-fcaf-46a9-97e0-2b26a2cdb499"
